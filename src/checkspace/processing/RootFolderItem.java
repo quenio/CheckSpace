@@ -7,13 +7,13 @@ public class RootFolderItem
 {
     private final String name;
     private final long space;
-    private final Date timestamp;
+    private final Date lastAccess;
 
-    public RootFolderItem(String name, long space, Date timestamp)
+    public RootFolderItem(String name, long space, Date lastAccess)
     {
         this.name = name;
         this.space = space;
-        this.timestamp = timestamp;
+        this.lastAccess = lastAccess;
     }
 
     /** O nome do arquivo ou sub-folder. **/
@@ -28,10 +28,10 @@ public class RootFolderItem
         return space;
     }
 
-    /** O timestamp do último acesso efetuado a este item **/
-    public Date getTimestamp()
+    /** O lastAccess do último acesso efetuado a este item **/
+    public Date getLastAccess()
     {
-        return timestamp;
+        return lastAccess;
     }
 
 }

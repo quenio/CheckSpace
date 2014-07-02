@@ -4,6 +4,12 @@ import checkspace.console.Console;
 
 public class UnknownCommand implements Command
 {
+    /** Nunca deve ser chamado nesta classe. **/
+    @Override
+    public String getHelpLine()
+    {
+        throw new UnsupportedOperationException("Nunca deve ser chamado nesta classe.");
+    }
 
     /** Nunca deve ser chamado nesta classe. **/
     @Override
@@ -20,5 +26,4 @@ public class UnknownCommand implements Command
         // Continua execução para que o usuário possa tentar novamente.
         return true;
     }
-
 }

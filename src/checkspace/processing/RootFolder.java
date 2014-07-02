@@ -1,9 +1,10 @@
 package checkspace.processing;
 
+import java.util.Arrays;
 import java.util.Iterator;
 
 /** Representa a pasta-raíz na qual foi feita a captura de informações. **/
-public class RootFolder implements Iterable<RootFolderItem>
+public class RootFolder
 {
     private RootFolderItem[] items;
 
@@ -12,26 +13,10 @@ public class RootFolder implements Iterable<RootFolderItem>
         this.items = items;
     }
 
-    @Override
-    public Iterator<RootFolderItem> iterator()
+    public RootFolderItem[] getItems()
     {
-        return new Iterator<RootFolderItem>()
-        {
-            private int i = 0;
-
-            @Override
-            public boolean hasNext()
-            {
-                return items.length > i && items[i] != null;
-            }
-
-            @Override
-            public RootFolderItem next()
-            {
-                return items[i++];
-            }
-
-        };
+        // Retorna uma cópia para que o encapsulamento não seja quebrado.
+        return Arrays.copyOf(items, items.length);
     }
 
 }
