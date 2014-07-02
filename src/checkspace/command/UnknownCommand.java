@@ -21,7 +21,7 @@ public class UnknownCommand implements Command
     @Override
     public boolean execute(Console console)
     {
-        console.printLine("O comando digitado não foi reconhecido. Por favor, tente novamente.");
+        console.printLine("\nO comando digitado não foi reconhecido. Por favor, tente novamente.\n");
 
         // Continua execução para que o usuário possa tentar novamente.
         return true;

@@ -25,11 +25,12 @@ public class UsageReport
     {
         printHeader();
         printLines(rootFolder);
+        printFooter();
     }
 
     private void printHeader()
     {
-        console.printLine("Nome          Espaço         Último Accesso");
+        console.printLine("\nNome          Espaço         Último Accesso");
         console.printLine("-------------------------------------------");
     }
 
@@ -40,6 +41,11 @@ public class UsageReport
         {
             printLine(item);
         }
+    }
+
+    private void printFooter()
+    {
+        console.printLine("-------------------------------------------\n");
     }
 
     private void printLine(RootFolderItem item)

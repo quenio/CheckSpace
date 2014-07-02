@@ -18,10 +18,28 @@ public class CommandLine
         boolean shouldContinue = true;
         while (shouldContinue)
         {
-            listAvailableCommands();
+            printAvailableCommands();
+            printPromptLine();
             final Command command = readCommand();
             shouldContinue = command.execute(console);
         }
+    }
+
+    private void printAvailableCommands()
+    {
+        console.printLine("Comandos disponíveis:");
+        for (Command command: commands)
+        {
+            if (command != null)
+            {
+                console.printLine(command.getHelpLine());
+            }
+        }
+    }
+
+    private void printPromptLine()
+    {
+        console.printLine("\nDigite um comando and pressione ENTER para confirmar:");
     }
 
     private Command readCommand()
@@ -37,14 +55,4 @@ public class CommandLine
         return new UnknownCommand();
     }
 
-    private void listAvailableCommands()
-    {
-        for (Command command: commands)
-        {
-            if (command != null)
-            {
-                console.printLine(command.getHelpLine());
-            }
-        }
-    }
 }
