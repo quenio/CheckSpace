@@ -2,8 +2,15 @@ package checkspace.command;
 
 import checkspace.console.Console;
 
-public class UnknownCommand implements Command
+public class UnknownCommand extends Command
 {
+    private final Console console;
+
+    public UnknownCommand(Console console)
+    {
+        this.console = console;
+    }
+
     /** Nunca deve ser chamado nesta classe. **/
     @Override
     public String getHelpLine()
@@ -19,7 +26,7 @@ public class UnknownCommand implements Command
     }
 
     @Override
-    public boolean execute(Console console)
+    public boolean execute(String line)
     {
         console.printLine("\nO comando digitado não foi reconhecido. Por favor, tente novamente.\n");
 

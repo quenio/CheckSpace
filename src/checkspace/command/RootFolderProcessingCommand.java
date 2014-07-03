@@ -9,15 +9,17 @@ import java.io.File;
 
 import static java.lang.String.format;
 
-public class RootFolderProcessingCommand implements Command
+public class RootFolderProcessingCommand extends Command
 {
     private static final String COMMAND = "p";
 
+    private final Console console;
     private final RootFolderProcessor rootFolderProcessor;
     private final UsageReport usageReport;
 
-    public RootFolderProcessingCommand(RootFolderProcessor rootFolderProcessor, UsageReport usageReport)
+    public RootFolderProcessingCommand(Console console, RootFolderProcessor rootFolderProcessor, UsageReport usageReport)
     {
+        this.console = console;
         this.rootFolderProcessor = rootFolderProcessor;
         this.usageReport = usageReport;
     }
@@ -35,7 +37,12 @@ public class RootFolderProcessingCommand implements Command
     }
 
     @Override
-    public boolean execute(Console console)
+    public boolean execute(String line)
+    {
+        return execute();
+    }
+
+    public boolean execute()
     {
         final String path = readRootFolderPath(console);
         if (folderNotFound(path))
@@ -46,7 +53,8 @@ public class RootFolderProcessingCommand implements Command
         {
             console.printLine("Analisando pasta...");
             final RootFolder rootFolder = rootFolderProcessor.process(path);
-            usageReport.print(rootFolder);
+            usageReport.setRootFolder(rootFolder);
+            usageReport.print();
         }
 
         // Permite a execução de outros comandos após esse.
@@ -58,7 +66,7 @@ public class RootFolderProcessingCommand implements Command
         final String home = System.getProperty("user.home");
         console.printLine(format("Digite o caminho da pasta a ser analisada (pressione ENTER para '%s'):", home));
 
-        final String line = console.readLine();
+        final String line = console.readNewLine();
 
         return line.trim().equals("") ? home : line;
     }

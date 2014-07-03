@@ -3,9 +3,16 @@ package checkspace.command;
 import checkspace.console.Console;
 
 /** Termina a execução do aplicativo. **/
-public class ExitCommand implements Command
+public class ExitCommand extends Command
 {
     private static final String COMMAND = "s";
+
+    private final Console console;
+
+    public ExitCommand(Console console)
+    {
+        this.console = console;
+    }
 
     @Override
     public String getHelpLine()
@@ -20,7 +27,7 @@ public class ExitCommand implements Command
     }
 
     @Override
-    public boolean execute(Console console)
+    public boolean execute(String line)
     {
         console.printLine("Terminando CheckSpace...");
 

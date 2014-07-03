@@ -21,7 +21,7 @@ public class CommandLine
             printAvailableCommands();
             printPromptLine();
             final Command command = readCommand();
-            shouldContinue = command.execute(console);
+            shouldContinue = command.execute(console.getLastLineRead());
         }
     }
 
@@ -30,10 +30,7 @@ public class CommandLine
         console.printLine("Comandos disponíveis:");
         for (Command command: commands)
         {
-            if (command != null)
-            {
-                console.printLine(command.getHelpLine());
-            }
+            console.printLine(command.getHelpLine());
         }
     }
 
@@ -44,15 +41,15 @@ public class CommandLine
 
     private Command readCommand()
     {
-        final String line = console.readLine();
+        final String line = console.readNewLine();
         for (Command command: commands)
         {
-            if (command != null && command.accepts(line))
+            if (command.accepts(line))
             {
                 return command;
             }
         }
-        return new UnknownCommand();
+        return new UnknownCommand(console);
     }
 
 }

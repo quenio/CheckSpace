@@ -4,27 +4,40 @@ import checkspace.console.Console;
 import checkspace.processing.RootFolder;
 import checkspace.processing.RootFolderItem;
 
-/** Imprime as informações capturadas em RootFolder na ordem especificada por ReportOrder. **/
+/** Imprime no Console as informações capturadas em RootFolder na ordem especificada por ReportOrder. **/
 public class UsageReport
 {
-    private final Console console;
+    /** Contém as informações a serem impressas. Definido por RootFolderProcessingCommand. **/
+    private RootFolder rootFolder;
 
-    private ReportOrder reportOrder;
+    // Classes utilizadas na ordenação:
+    private final ReportOrder reportOrder = new ReportOrder();
+    private final ReportSorter reportSorter = new ReportSorter(reportOrder);
+
+    // O relatório é impresso no Console:
+    private final Console console;
 
     public UsageReport(Console console)
     {
         this.console = console;
     }
 
-    public void setReportOrder(ReportOrder reportOrder)
+    public ReportOrder getReportOrder()
     {
-        this.reportOrder = reportOrder;
+        return reportOrder;
     }
 
-    public void print(RootFolder rootFolder)
+    public void setRootFolder(RootFolder rootFolder)
     {
+        this.rootFolder = rootFolder;
+    }
+
+    public void print()
+    {
+        precondition: assert rootFolder != null : "RootFolder precisa ser definido antes de chamar print()";
+
         printHeader();
-        printLines(rootFolder);
+        printLines();
         printFooter();
     }
 
@@ -34,23 +47,24 @@ public class UsageReport
         console.printLine("-------------------------------------------");
     }
 
-    private void printLines(RootFolder rootFolder)
+    private void printLines()
     {
-        final ReportSorter reportSorter = new ReportSorter(reportOrder);
-        for (RootFolderItem item : reportSorter.sort(rootFolder.getItems()))
+        final RootFolderItem[] sortedItems = reportSorter.sort(rootFolder.getItems());
+
+        for (RootFolderItem item : sortedItems)
         {
             printLine(item);
         }
     }
 
-    private void printFooter()
-    {
-        console.printLine("-------------------------------------------\n");
-    }
-
     private void printLine(RootFolderItem item)
     {
         console.printLine(item.getName() + "   " + item.getSpace() + "   " + item.getLastAccess());
+    }
+
+    private void printFooter()
+    {
+        console.printLine("-------------------------------------------\n");
     }
 
 }

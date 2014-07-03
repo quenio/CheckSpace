@@ -86,8 +86,8 @@ O componente de comando será responsável pela interação com o usuário e com
 
 A abstração central deste componente é a interface *Command*, que representa um comando que pode ser executado pelo usuário. Existem algumas implementações:
 * *RootFolderProcessingCommand*: reconhece comando `p` como descrito na seção anterior, permitindo ao usuário definir uma pasta, processando esta e finalmente imprimindo o *Relatório de Uso*.
-* *ReportOrderingCommand*: reconhece os comandos `od` e `oc` ordenando o *Relatório de Uso* em ordem descrente ou crescente, respectivamente.
-* *ColumnOrderingCommand*: reconhece os comandos iniciados com `c` e ordena a coluna correspondente do *Relatório de Uso*.
+* *ReportOrderDirectionCommand*: reconhece os comandos `od` e `oc` ordenando o *Relatório de Uso* em ordem descrente ou crescente, respectivamente.
+* *ReportOrderColumnCommand*: reconhece os comandos iniciados com `c` e ordena a coluna correspondente do *Relatório de Uso*.
 * *ExitCommand*: reconhece o comando `s` e termina a execução do aplicativo.
 
 A classe principal de controle é *CommandLine*, que processa os comandos executados pelo usuário na linha-de-comando. Para cada linha digitada pelo usuário, esta classe:
@@ -146,7 +146,7 @@ Abaixo estão listadas as tarefas da primeira fase do projeto:
 
 ## 4.2 - Phase II
 Abaixo estão listadas as tarefas da segunda fase:
-1. Implementar *ReportOrderCommand* e *ReportColumnCommand*.
-1. Finalizar a implementação de *RootFolderProcessor*.
+1. Implementar * ReportOrderDirectionCommand* e * ReportOrderColumnCommand*.
 1. Implementar o método `sort()` de *ReportSorter*.
+1. Finalizar a implementação de *RootFolderProcessor*.
 1. Alinhar as colunas da tabela de *UsageReport*.

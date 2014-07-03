@@ -1,9 +1,6 @@
 package checkspace;
 
-import checkspace.command.Command;
-import checkspace.command.CommandLine;
-import checkspace.command.ExitCommand;
-import checkspace.command.RootFolderProcessingCommand;
+import checkspace.command.*;
 import checkspace.console.Console;
 import checkspace.processing.RootFolderProcessor;
 import checkspace.report.UsageReport;
@@ -12,24 +9,27 @@ public class CheckSpace
 {
     public static void main(String[] args)
     {
+        // Instanciação das classes do aplicativo:
         final Console console = new Console();
         final RootFolderProcessor rootFolderProcessor = new RootFolderProcessor(console);
         final UsageReport usageReport = new UsageReport(console);
         final RootFolderProcessingCommand rootFolderProcessingCommand =
-                new RootFolderProcessingCommand(rootFolderProcessor, usageReport);
+                new RootFolderProcessingCommand(console, rootFolderProcessor, usageReport);
         final CommandLine commandLine = new CommandLine(
                 console,
                 new Command[]
                 {
-                    new ExitCommand(),
+                    new ExitCommand(console),
+                    new ReportOrderColumnCommand(usageReport),
+                    new ReportOrderDirectionCommand(usageReport),
                     rootFolderProcessingCommand
                 });
 
-        // Introdução:
+        // Apresentação ao usuário:
         console.printLine("CheckSpace - auxilia na liberação de espaço em seu computador...\n");
 
-        // Começa pedindo ao usuário que escolha uma pasta-raíz:
-        rootFolderProcessingCommand.execute(console);
+        // Começa pedindo ao usuário que escolha uma pasta-raiz:
+        rootFolderProcessingCommand.execute();
 
         // Depois permite executar outros comandos:
         commandLine.executeCommands();
