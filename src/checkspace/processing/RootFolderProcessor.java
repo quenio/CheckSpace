@@ -2,6 +2,7 @@ package checkspace.processing;
 
 import checkspace.console.Console;
 
+import java.io.File;
 import java.util.Date;
 
 public class RootFolderProcessor
@@ -16,11 +17,30 @@ public class RootFolderProcessor
     /** Processa todos os arquivos e sub-pastas no caminho especificado e retorna RootFolder com a informações. **/
     public RootFolder process(String path)
     {
-        return new RootFolder(new RootFolderItem[]
-            {
-                new RootFolderItem("Folder2", 600000, new Date()),
-                new RootFolderItem("Folder3", 400000, new Date()),
-                new RootFolderItem("Folder1", 200000, new Date()),
-            });
+        final File root = new File(path);
+
+        assert root.isDirectory() : "Path must refer to a folder: " + path;
+
+        final RootFolderItem[] items = map(root.listFiles());
+
+        return new RootFolder(items);
+    }
+
+    private RootFolderItem[] map(File[] files)
+    {
+        final RootFolderItem[] items = new RootFolderItem[files.length];
+
+        int i = 0;
+        for (File file : files)
+        {
+            items[i++] = map(file);
+        }
+
+        return items;
+    }
+
+    private RootFolderItem map(File file)
+    {
+        return new RootFolderItem(file.getName(), file.length(), new Date(file.lastModified()));
     }
 }
