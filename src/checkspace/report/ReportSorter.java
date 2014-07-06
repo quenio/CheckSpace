@@ -2,7 +2,10 @@ package checkspace.report;
 
 import checkspace.processing.RootFolderItem;
 
+import java.util.Arrays;
 import java.util.Iterator;
+
+import static java.util.Arrays.copyOf;
 
 public class ReportSorter
 {
@@ -15,7 +18,10 @@ public class ReportSorter
 
     public RootFolderItem[] sort(RootFolderItem[] items)
     {
-        // TODO Implement sorting.
-        return items;
+        final RootFolderItem[] copy = copyOf(items, items.length);
+
+        Arrays.sort(copy, reportOrder.comparator());
+
+        return copy;
     }
 }

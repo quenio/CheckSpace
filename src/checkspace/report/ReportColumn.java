@@ -1,8 +1,58 @@
 package checkspace.report;
 
+import checkspace.processing.RootFolderItem;
+
+import java.util.Comparator;
+
 public enum ReportColumn
 {
-    NAME, SPACE, LAST_ACCESS;
+    NAME
+    {
+        @Override
+        public Comparator<RootFolderItem> comparator()
+        {
+            return new Comparator<RootFolderItem>()
+            {
+                @Override
+                public int compare(RootFolderItem item1, RootFolderItem item2)
+                {
+                    return item1.getName().compareTo(item2.getName());
+                }
+            };
+        }
+    },
+
+    SPACE
+    {
+        @Override
+        public Comparator<RootFolderItem> comparator()
+        {
+            return new Comparator<RootFolderItem>()
+            {
+                @Override
+                public int compare(RootFolderItem item1, RootFolderItem item2)
+                {
+                    return new Long(item1.getSpace()).compareTo(item2.getSpace());
+                }
+            };
+        }
+    },
+
+    LAST_ACCESS
+    {
+        @Override
+        public Comparator<RootFolderItem> comparator()
+        {
+            return new Comparator<RootFolderItem>()
+            {
+                @Override
+                public int compare(RootFolderItem item1, RootFolderItem item2)
+                {
+                    return item1.getLastAccess().compareTo(item2.getLastAccess());
+                }
+            };
+        }
+    };
 
     public static ReportColumn fromNumber(int columnNumber)
     {
@@ -10,4 +60,6 @@ public enum ReportColumn
 
         return values()[columnNumber - 1];
     }
+
+    public abstract Comparator<RootFolderItem> comparator();
 }

@@ -18,9 +18,9 @@ public class RootFolderProcessor
     {
         return new RootFolder(new RootFolderItem[]
             {
+                new RootFolderItem("Folder2", 600000, new Date()),
+                new RootFolderItem("Folder3", 400000, new Date()),
                 new RootFolderItem("Folder1", 200000, new Date()),
-                new RootFolderItem("Folder2", 400000, new Date()),
-                new RootFolderItem("Folder3", 600000, new Date()),
             });
     }
 }
