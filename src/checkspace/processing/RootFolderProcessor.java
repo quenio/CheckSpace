@@ -13,7 +13,7 @@ public class RootFolderProcessor
         this.console = console;
     }
 
-    /** Processa todos os aquivos e sub-pastas no caminho especificado e retorna RootFolder com a informações. **/
+    /** Processa todos os arquivos e sub-pastas no caminho especificado e retorna RootFolder com a informações. **/
     public RootFolder process(String path)
     {
         return new RootFolder(new RootFolderItem[]
