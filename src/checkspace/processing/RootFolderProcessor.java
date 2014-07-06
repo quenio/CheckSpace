@@ -33,6 +33,8 @@ public class RootFolderProcessor
         int i = 0;
         for (File file : files)
         {
+            console.printLine("Processando: " + file.getName());
+
             items[i++] = map(file);
         }
 
@@ -41,6 +43,52 @@ public class RootFolderProcessor
 
     private RootFolderItem map(File file)
     {
-        return new RootFolderItem(file.getName(), file.length(), new Date(file.lastModified()));
+        return new RootFolderItem(file.getName(), spaceOf(file), lastAccessOf(file));
+    }
+
+    private long spaceOf(File file)
+    {
+        if (file.isDirectory())
+        {
+            long space = 0;
+
+            for (File f : file.listFiles())
+            {
+                space += spaceOf(f);
+            }
+
+            return space;
+        }
+        else
+        {
+            return file.length();
+        }
+    }
+
+    private Date lastAccessOf(File file)
+    {
+        final long lastAccess = 0;
+
+        lastAccessOf(file, lastAccess);
+
+        return new Date(lastAccess);
+    }
+
+    private long lastAccessOf(File file, long lastAccess)
+    {
+        if (lastAccess < file.lastModified())
+        {
+            lastAccess = file.lastModified();
+        }
+
+        if (file.isDirectory())
+        {
+            for (File f : file.listFiles())
+            {
+                lastAccess = lastAccessOf(f, lastAccess);
+            }
+        }
+
+        return lastAccess;
     }
 }
