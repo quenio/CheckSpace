@@ -67,11 +67,7 @@ public class RootFolderProcessor
 
     private Date lastAccessOf(File file)
     {
-        final long lastAccess = 0;
-
-        lastAccessOf(file, lastAccess);
-
-        return new Date(lastAccess);
+        return new Date(lastAccessOf(file, 0));
     }
 
     private long lastAccessOf(File file, long lastAccess)
