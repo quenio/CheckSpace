@@ -56,9 +56,14 @@ public enum ReportColumn
 
     public static ReportColumn fromNumber(int columnNumber)
     {
-        precondition: assert columnNumber >= 1 && columnNumber <= values().length : "columnNumber out of bounds";
+        precondition: assert withinColumnRange(columnNumber) : "columnNumber out of bounds";
 
         return values()[columnNumber - 1];
+    }
+
+    public static boolean withinColumnRange(int columnNumber)
+    {
+        return columnNumber >= 1 && columnNumber <= values().length;
     }
 
     public abstract Comparator<RootFolderItem> comparator();

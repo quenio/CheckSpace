@@ -26,7 +26,11 @@ public class ReportOrderColumnCommand extends Command
     @Override
     public boolean accepts(String line)
     {
-        return line.length() == 2 && line.startsWith(COMMAND_PREFIX) && extractColumn(line).matches(REGEX_NUMBER);
+        final String column = extractColumn(line);
+        return line.length() == 2
+                && line.startsWith(COMMAND_PREFIX)
+                && column.matches(REGEX_NUMBER)
+                && ReportColumn.withinColumnRange(parseInt(column));
     }
 
     @Override
