@@ -1,4 +1,7 @@
+Projeto Final INE 5402 - POO I
 Quenio C. M. Santos
+7 de julho de 2014
+
 # 1 - Introdução ao Projeto CheckSpace
 A seguir, encontram-se o propósito do projeto CheckSpace e os princípios que guiaram sua implementação.
 
@@ -63,7 +66,7 @@ Logo após, o aplicativo novamente pergunta ao usuário o caminho de uma pasta e
 ## 2.8 - Informando o Progresso da Análise
 A pasta sendo analisada pode conter centenas ou até milhares de arquivos, o que pode tornar demorada a captura de informações do *Relatório de Uso*.
 
-Quando isto ocorrer, o usuário será informado na linha-de-comando qual arquivo ou sub-pasta está sendo analisada pelo aplicativo naquele momento, com uma estimativa do progresso em percentual.
+Quando isto ocorrer, o usuário será informado na linha-de-comando qual arquivo ou sub-pasta está sendo analisada pelo aplicativo naquele momento.
 
 ## 2.9 - Comandos Disponíveis
 A qualquer momento durante a execução do aplicativo, todos os comandos disponíveis ao usuário serão apresentados na tela com uma frase explicativa.
