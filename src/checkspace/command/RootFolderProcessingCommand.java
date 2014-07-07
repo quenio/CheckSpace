@@ -47,11 +47,11 @@ public class RootFolderProcessingCommand extends Command
         final String path = readRootFolderPath(console);
         if (folderNotFound(path))
         {
-            console.printLine("A pasta digitada não se encontra neste computador.");
+            console.printLine("\nA pasta digitada não se encontra neste computador: ", path);
         }
         else
         {
-            console.printLine("Analisando pasta...");
+            console.printLine("\nAnalisando pasta raiz...");
             final RootFolder rootFolder = rootFolderProcessor.process(path);
             usageReport.setRootFolder(rootFolder);
             usageReport.print();
@@ -67,8 +67,9 @@ public class RootFolderProcessingCommand extends Command
         console.printLine(format("Digite o caminho da pasta a ser analisada (pressione ENTER para '%s'):", home));
 
         final String line = console.readNewLine();
+        final String path = line.equals("") ? home : line;
 
-        return line.trim().equals("") ? home : line;
+        return line.startsWith("/") ? path : (home + File.separator + path);
     }
 
     private boolean folderNotFound(String path)
