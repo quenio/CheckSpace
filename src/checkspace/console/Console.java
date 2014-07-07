@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import static java.lang.String.format;
+
 /** Imprime e lê linhas no terminal do computador. **/
 public class Console
 {
@@ -15,6 +17,11 @@ public class Console
     public void printLine(String line)
     {
         System.out.println(line);
+    }
+
+    public void printLine(String line, Object... args)
+    {
+        printLine(format(line, args));
     }
 
     /** Lê uma linha do terminal do computador. **/
