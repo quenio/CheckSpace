@@ -1,5 +1,6 @@
 package checkspace.app;
 
+import checkspace.gui.IO;
 import checkspace.gui.Window;
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -23,7 +24,12 @@ public class CheckSpaceApp extends Application
   public void start(Stage primaryStage) throws Exception
   {
     final ResourceBundle resourceBundle = ResourceBundle.getBundle(APP_BUNDLE_NAME);
-    final Window mainWindow = new Window(resourceBundle, MAIN_WINDOW_RESOURCE_NAME, MAIN_WINDOW_WIDTH, MAIN_WINDOW_HEIGHT);
+    final Window mainWindow = new Window(
+      resourceBundle,
+      MAIN_WINDOW_RESOURCE_NAME,
+      new MainController(new IO()),
+      MAIN_WINDOW_WIDTH,
+      MAIN_WINDOW_HEIGHT);
 
     primaryStage.setTitle(MAIN_WINDOW_TITLE);
     mainWindow.showAt(primaryStage);

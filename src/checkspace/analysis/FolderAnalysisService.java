@@ -21,5 +21,4 @@ public class FolderAnalysisService extends Service<FolderAnalysis>
   {
     return new FolderAnalysisTask(folderPathProperty.get());
   }
-
 }

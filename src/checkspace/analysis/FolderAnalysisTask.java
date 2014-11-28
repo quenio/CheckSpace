@@ -18,13 +18,17 @@ public class FolderAnalysisTask extends Task<FolderAnalysis>
   @Override
   protected FolderAnalysis call() throws Exception
   {
-    updateMessage("Analisando pasta...");
+    updateMessage("message.analysingFolder");
 
     final FolderAnalysis folderAnalysis = analyzeFiles();
 
     if (folderAnalysis.getItems().length == 0)
     {
       updateMessage(String.format("Pasta vazia ou não existe: %s", rootFolder.getAbsoluteFile()));
+    }
+    else
+    {
+      updateMessage("message.analysisComplete");
     }
 
     return folderAnalysis;
@@ -49,11 +53,11 @@ public class FolderAnalysisTask extends Task<FolderAnalysis>
     {
       if (isCancelled())
       {
-        updateMessage("Cancelled");
+        updateMessage("Análise canceldada.");
       }
       else
       {
-        updateMessage("Processando: " + file.getName());
+        updateMessage("Analisando: " + file.getName());
         items[i++] = map(file);
       }
     }
