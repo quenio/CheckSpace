@@ -34,7 +34,8 @@ public class Window
     try
     {
       return FXMLLoader.load(getResourceOfType(FXML_FILE_EXT, resourceName), resourceBundle);
-    } catch (IOException exception)
+    }
+    catch (IOException exception)
     {
       exception.printStackTrace();
       return new Group();
