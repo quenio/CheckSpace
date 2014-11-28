@@ -1,8 +1,8 @@
 package checkspace.reports;
 
+import checkspace.analysis.FolderAnalysis;
+import checkspace.analysis.FolderAnalysisItem;
 import checkspace.gui.IO;
-import checkspace.processing.RootFolder;
-import checkspace.processing.RootFolderItem;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -32,7 +32,7 @@ public class UsageReport
   /**
    * Contém as informações a serem impressas. Definido por RootFolderProcessingCommand. *
    */
-  private RootFolder rootFolder;
+  private FolderAnalysis folderAnalysis;
 
   // Classes utilizadas na ordenação:
   private final ReportOrder reportOrder = new ReportOrder();
@@ -50,15 +50,15 @@ public class UsageReport
     return reportOrder;
   }
 
-  public void setRootFolder(RootFolder rootFolder)
+  public void setFolderAnalysis(FolderAnalysis folderAnalysis)
   {
-    this.rootFolder = rootFolder;
+    this.folderAnalysis = folderAnalysis;
   }
 
   public void print()
   {
     precondition:
-    assert rootFolder != null : "RootFolder precisa ser definido antes de chamar print()";
+    assert folderAnalysis != null : "RootFolder precisa ser definido antes de chamar print()";
 
     printHeader();
     printLines();
@@ -73,15 +73,15 @@ public class UsageReport
 
   private void printLines()
   {
-    final RootFolderItem[] sortedItems = reportSorter.sort(rootFolder.getItems());
+    final FolderAnalysisItem[] sortedItems = reportSorter.sort(folderAnalysis.getItems());
 
-    for (RootFolderItem item : sortedItems)
+    for (FolderAnalysisItem item : sortedItems)
     {
       printItem(item);
     }
   }
 
-  private void printItem(RootFolderItem item)
+  private void printItem(FolderAnalysisItem item)
   {
     if (isClearText(item.getName()))
     {

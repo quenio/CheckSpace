@@ -1,7 +1,7 @@
-package checkspace.commands;
+package checkspace.app;
 
+import checkspace.analysis.FolderAnalysisService;
 import checkspace.gui.IO;
-import checkspace.processing.RootFolderProcessor;
 import checkspace.reports.UsageReport;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -12,10 +12,8 @@ public class MainController
 {
   private final IO io = new IO();
   private final StringProperty folderPathProperty = new SimpleStringProperty();
-  private final RootFolderProcessor rootFolderProcessor = new RootFolderProcessor(io);
   private final UsageReport usageReport = new UsageReport(io);
-  private final RootFolderProcessingCommand rootFolderProcessingCommand =
-    new RootFolderProcessingCommand(io, folderPathProperty, rootFolderProcessor, usageReport);
+  private final FolderAnalysisService folderAnalysisService = new FolderAnalysisService(folderPathProperty, usageReport);
 
   @FXML
   private TextField folderPathTextField;
@@ -24,12 +22,12 @@ public class MainController
   public void initialize()
   {
     folderPathProperty.bindBidirectional(folderPathTextField.textProperty());
-    rootFolderProcessingCommand.initialize();
+    folderPathProperty.set(System.getProperty("user.home"));
   }
 
   @FXML
   public void changeFolder()
   {
-    rootFolderProcessingCommand.execute();
+    folderAnalysisService.start();
   }
 }

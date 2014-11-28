@@ -1,70 +1,71 @@
 package checkspace.reports;
 
-import checkspace.processing.RootFolderItem;
+import checkspace.analysis.FolderAnalysisItem;
 
 import java.util.Comparator;
 
 public enum ReportColumn
 {
-    NAME
+  NAME
     {
-        @Override
-        public Comparator<RootFolderItem> comparator()
+      @Override
+      public Comparator<FolderAnalysisItem> comparator()
+      {
+        return new Comparator<FolderAnalysisItem>()
         {
-            return new Comparator<RootFolderItem>()
-            {
-                @Override
-                public int compare(RootFolderItem item1, RootFolderItem item2)
-                {
-                    return item1.getName().compareTo(item2.getName());
-                }
-            };
-        }
+          @Override
+          public int compare(FolderAnalysisItem item1, FolderAnalysisItem item2)
+          {
+            return item1.getName().compareTo(item2.getName());
+          }
+        };
+      }
     },
 
-    SPACE
+  SPACE
     {
-        @Override
-        public Comparator<RootFolderItem> comparator()
+      @Override
+      public Comparator<FolderAnalysisItem> comparator()
+      {
+        return new Comparator<FolderAnalysisItem>()
         {
-            return new Comparator<RootFolderItem>()
-            {
-                @Override
-                public int compare(RootFolderItem item1, RootFolderItem item2)
-                {
-                    return new Long(item1.getSpace()).compareTo(item2.getSpace());
-                }
-            };
-        }
+          @Override
+          public int compare(FolderAnalysisItem item1, FolderAnalysisItem item2)
+          {
+            return new Long(item1.getSpace()).compareTo(item2.getSpace());
+          }
+        };
+      }
     },
 
-    LAST_ACCESS
+  LAST_ACCESS
     {
-        @Override
-        public Comparator<RootFolderItem> comparator()
+      @Override
+      public Comparator<FolderAnalysisItem> comparator()
+      {
+        return new Comparator<FolderAnalysisItem>()
         {
-            return new Comparator<RootFolderItem>()
-            {
-                @Override
-                public int compare(RootFolderItem item1, RootFolderItem item2)
-                {
-                    return item1.getLastAccess().compareTo(item2.getLastAccess());
-                }
-            };
-        }
+          @Override
+          public int compare(FolderAnalysisItem item1, FolderAnalysisItem item2)
+          {
+            return item1.getLastAccess().compareTo(item2.getLastAccess());
+          }
+        };
+      }
     };
 
-    public static ReportColumn fromNumber(int columnNumber)
-    {
-        precondition: assert withinColumnRange(columnNumber) : "columnNumber out of bounds";
+  public static ReportColumn fromNumber(int columnNumber)
+  {
+    precondition:
+    assert withinColumnRange(columnNumber) : "columnNumber out of bounds";
 
-        return values()[columnNumber - 1];
-    }
+    return values()[columnNumber - 1];
+  }
 
-    public static boolean withinColumnRange(int columnNumber)
-    {
-        return columnNumber >= 1 && columnNumber <= values().length;
-    }
+  public static boolean withinColumnRange(int columnNumber)
+  {
+    return columnNumber >= 1 && columnNumber <= values().length;
+  }
 
-    public abstract Comparator<RootFolderItem> comparator();
+  public abstract Comparator<FolderAnalysisItem> comparator();
 }
