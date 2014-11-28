@@ -1,7 +1,7 @@
 package checkspace.commands;
 
-import checkspace.report.ReportDirection;
-import checkspace.report.UsageReport;
+import checkspace.reports.ReportDirection;
+import checkspace.reports.UsageReport;
 
 import static java.lang.String.format;
 

@@ -1,4 +1,4 @@
-package checkspace.report;
+package checkspace.reports;
 
 public enum ReportDirection
 {

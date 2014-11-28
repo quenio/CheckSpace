@@ -1,9 +1,8 @@
-package checkspace.report;
+package checkspace.reports;
 
 import checkspace.processing.RootFolderItem;
 
 import java.util.Arrays;
-import java.util.Iterator;
 
 import static java.util.Arrays.copyOf;
 

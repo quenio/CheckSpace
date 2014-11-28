@@ -1,7 +1,7 @@
 package checkspace.commands;
 
-import checkspace.report.ReportColumn;
-import checkspace.report.UsageReport;
+import checkspace.reports.ReportColumn;
+import checkspace.reports.UsageReport;
 
 import static java.lang.Integer.parseInt;
 

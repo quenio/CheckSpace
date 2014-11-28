@@ -1,4 +1,4 @@
-package checkspace.report;
+package checkspace.reports;
 
 import checkspace.gui.Console;
 import checkspace.processing.RootFolder;

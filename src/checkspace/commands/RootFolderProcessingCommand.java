@@ -3,7 +3,7 @@ package checkspace.commands;
 import checkspace.gui.Console;
 import checkspace.processing.RootFolder;
 import checkspace.processing.RootFolderProcessor;
-import checkspace.report.UsageReport;
+import checkspace.reports.UsageReport;
 
 import java.io.File;
 

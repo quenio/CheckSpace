@@ -3,7 +3,7 @@ package checkspace;
 import checkspace.commands.*;
 import checkspace.gui.Console;
 import checkspace.processing.RootFolderProcessor;
-import checkspace.report.UsageReport;
+import checkspace.reports.UsageReport;
 
 public class CheckSpace
 {
