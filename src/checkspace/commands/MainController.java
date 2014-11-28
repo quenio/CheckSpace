@@ -3,45 +3,24 @@ package checkspace.commands;
 import checkspace.gui.IO;
 import checkspace.processing.RootFolderProcessor;
 import checkspace.reports.UsageReport;
-import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.scene.control.TextField;
 
 public class MainController
 {
-  private final IO io;
-  private final Command[] commands;
+  private final IO io = new IO();
+  private final RootFolderProcessor rootFolderProcessor = new RootFolderProcessor(io);
+  private final UsageReport usageReport = new UsageReport(io);
+  private final RootFolderProcessingCommand rootFolderProcessingCommand =
+    new RootFolderProcessingCommand(io, rootFolderProcessor, usageReport);
 
-  public MainController()
+  @FXML
+  private TextField folderPathTextField;
+
+  @FXML
+  public void changeFolder()
   {
-    this.io = new IO();
-
-    final RootFolderProcessor rootFolderProcessor = new RootFolderProcessor(io);
-    final UsageReport usageReport = new UsageReport(io);
-    final RootFolderProcessingCommand rootFolderProcessingCommand =
-      new RootFolderProcessingCommand(io, rootFolderProcessor, usageReport);
-
-    this.commands = new Command[]
-      {
-        new ExitCommand(io),
-        new ReportOrderColumnCommand(usageReport),
-        new ReportOrderDirectionCommand(usageReport),
-        rootFolderProcessingCommand
-      };
-  }
-
-  private Command interpretCommandLine(String line)
-  {
-    for (Command command : commands)
-    {
-      if (command.accepts(line))
-      {
-        return command;
-      }
-    }
-    return new UnknownCommand(io);
-  }
-
-  public void changeFolder(ActionEvent actionEvent)
-  {
-    System.out.println("Hello World!");
+    final String folderPath = folderPathTextField.getText();
+    rootFolderProcessingCommand.execute(folderPath);
   }
 }

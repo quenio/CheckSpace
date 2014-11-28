@@ -7,12 +7,8 @@ import checkspace.reports.UsageReport;
 
 import java.io.File;
 
-import static java.lang.String.format;
-
-public class RootFolderProcessingCommand extends Command
+public class RootFolderProcessingCommand
 {
-  private static final String COMMAND = "p";
-
   private final IO io;
   private final RootFolderProcessor rootFolderProcessor;
   private final UsageReport usageReport;
@@ -24,27 +20,8 @@ public class RootFolderProcessingCommand extends Command
     this.usageReport = usageReport;
   }
 
-  @Override
-  public String getHelpLine()
+  public void execute(String path)
   {
-    return COMMAND + ": Faz análise em outra pasta.";
-  }
-
-  @Override
-  public boolean accepts(String line)
-  {
-    return line.equals(COMMAND);
-  }
-
-  @Override
-  public boolean execute(String line)
-  {
-    return execute();
-  }
-
-  public boolean execute()
-  {
-    final String path = readRootFolderPath(io);
     if (folderNotFound(path))
     {
       io.showMessage("\nA pasta digitada não se encontra neste computador: ", path);
@@ -56,20 +33,17 @@ public class RootFolderProcessingCommand extends Command
       usageReport.setRootFolder(rootFolder);
       usageReport.print();
     }
-
-    // Permite a execução de outros comandos após esse.
-    return true;
   }
 
-  private String readRootFolderPath(IO io)
-  {
-    final String home = System.getProperty("user.home");
-    final String message = format("Digite o caminho da pasta a ser analisada (pressione ENTER para '%s'):", home);
-    final String line = io.askForInput(message);
-    final String path = line.equals("") ? home : line;
-
-    return line.startsWith("/") ? path : (home + File.separator + path);
-  }
+//  private String readRootFolderPath(IO io)
+//  {
+//    final String home = System.getProperty("user.home");
+//    final String message = format("Digite o caminho da pasta a ser analisada (pressione ENTER para '%s'):", home);
+//    final String line = io.askForInput(message);
+//    final String path = line.equals("") ? home : line;
+//
+//    return line.startsWith("/") ? path : (home + File.separator + path);
+//  }
 
   private boolean folderNotFound(String path)
   {

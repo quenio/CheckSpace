@@ -6,7 +6,7 @@ public class IO
 {
   public void showMessage(String message)
   {
-    // TODO
+    System.out.println(message);
   }
 
   public void showMessage(String message, Object... args)

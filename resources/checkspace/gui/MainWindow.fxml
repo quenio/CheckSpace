@@ -6,7 +6,9 @@
   fx:controller="checkspace.commands.MainController">
   <top>
     <GridPane fx:id="folderChangePane">
-      <TextField GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+      <TextField
+        fx:id="folderPathTextField"
+        GridPane.columnIndex="0" GridPane.rowIndex="0"/>
       <Button
         GridPane.columnIndex="1" GridPane.rowIndex="0"
         text="%folderChange.buttonText"
