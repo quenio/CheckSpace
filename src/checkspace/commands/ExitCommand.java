@@ -1,6 +1,6 @@
-package checkspace.command;
+package checkspace.commands;
 
-import checkspace.console.Console;
+import checkspace.gui.Console;
 
 /** Termina a execução do aplicativo. **/
 public class ExitCommand extends Command

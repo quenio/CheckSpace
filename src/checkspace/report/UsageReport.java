@@ -1,6 +1,6 @@
 package checkspace.report;
 
-import checkspace.console.Console;
+import checkspace.gui.Console;
 import checkspace.processing.RootFolder;
 import checkspace.processing.RootFolderItem;
 

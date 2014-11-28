@@ -1,4 +1,4 @@
-package checkspace.console;
+package checkspace.gui;
 
 import java.io.BufferedReader;
 import java.io.IOException;

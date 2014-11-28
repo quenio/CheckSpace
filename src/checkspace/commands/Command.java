@@ -1,4 +1,4 @@
-package checkspace.command;
+package checkspace.commands;
 
 public abstract class Command
 {

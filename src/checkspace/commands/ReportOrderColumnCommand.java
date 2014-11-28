@@ -1,4 +1,4 @@
-package checkspace.command;
+package checkspace.commands;
 
 import checkspace.report.ReportColumn;
 import checkspace.report.UsageReport;

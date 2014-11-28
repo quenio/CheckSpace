@@ -1,6 +1,6 @@
-package checkspace.command;
+package checkspace.commands;
 
-import checkspace.console.Console;
+import checkspace.gui.Console;
 import checkspace.processing.RootFolder;
 import checkspace.processing.RootFolderProcessor;
 import checkspace.report.UsageReport;

@@ -1,6 +1,6 @@
 package checkspace.processing;
 
-import checkspace.console.Console;
+import checkspace.gui.Console;
 
 import java.io.File;
 import java.util.Date;
