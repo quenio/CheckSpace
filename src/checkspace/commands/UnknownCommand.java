@@ -1,14 +1,14 @@
 package checkspace.commands;
 
-import checkspace.gui.Console;
+import checkspace.gui.MainWindow;
 
 public class UnknownCommand extends Command
 {
-    private final Console console;
+    private final MainWindow mainWindow;
 
-    public UnknownCommand(Console console)
+    public UnknownCommand(MainWindow mainWindow)
     {
-        this.console = console;
+        this.mainWindow = mainWindow;
     }
 
     /** Nunca deve ser chamado nesta classe. **/
@@ -28,7 +28,7 @@ public class UnknownCommand extends Command
     @Override
     public boolean execute(String line)
     {
-        console.printLine("\nO comando digitado não foi reconhecido. Por favor, tente novamente.\n");
+        mainWindow.showMessage("\nO comando digitado não foi reconhecido. Por favor, tente novamente.\n");
 
         // Continua execução para que o usuário possa tentar novamente.
         return true;

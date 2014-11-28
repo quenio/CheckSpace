@@ -1,17 +1,17 @@
 package checkspace.processing;
 
-import checkspace.gui.Console;
+import checkspace.gui.MainWindow;
 
 import java.io.File;
 import java.util.Date;
 
 public class RootFolderProcessor
 {
-    private final Console console;
+    private final MainWindow mainWindow;
 
-    public RootFolderProcessor(Console console)
+    public RootFolderProcessor(MainWindow mainWindow)
     {
-        this.console = console;
+        this.mainWindow = mainWindow;
     }
 
     /** Processa todos os arquivos e sub-pastas no caminho especificado e retorna RootFolder com a informações. **/
@@ -33,7 +33,7 @@ public class RootFolderProcessor
         int i = 0;
         for (File file : files)
         {
-            console.printLine("Processando: " + file.getName());
+            mainWindow.showMessage("Processando: " + file.getName());
 
             items[i++] = map(file);
         }

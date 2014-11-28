@@ -1,6 +1,6 @@
 package checkspace.reports;
 
-import checkspace.gui.Console;
+import checkspace.gui.MainWindow;
 import checkspace.processing.RootFolder;
 import checkspace.processing.RootFolderItem;
 
@@ -35,11 +35,11 @@ public class UsageReport
     private final ReportSorter reportSorter = new ReportSorter(reportOrder);
 
     // O relatório é impresso no Console:
-    private final Console console;
+    private final MainWindow mainWindow;
 
-    public UsageReport(Console console)
+    public UsageReport(MainWindow mainWindow)
     {
-        this.console = console;
+        this.mainWindow = mainWindow;
     }
 
     public ReportOrder getReportOrder()
@@ -63,7 +63,7 @@ public class UsageReport
 
     private void printHeader()
     {
-        console.printLine(HEADER_FORMAT, "Nome", "Espaço", "Último Acesso");
+        mainWindow.showMessage(HEADER_FORMAT, "Nome", "Espaço", "Último Acesso");
         printBar();
     }
 
@@ -81,11 +81,11 @@ public class UsageReport
     {
         if (isClearText(item.getName()))
         {
-            console.printLine(
-                    ITEM_FORMAT,
-                    item.getName(),
-                    formattedSpace(item.getSpace()),
-                    formattedDate(item.getLastAccess()));
+            mainWindow.showMessage(
+              ITEM_FORMAT,
+              item.getName(),
+              formattedSpace(item.getSpace()),
+              formattedDate(item.getLastAccess()));
         }
     }
 
@@ -127,12 +127,12 @@ public class UsageReport
     private void printFooter()
     {
         printBar();
-        console.printLine("");
+        mainWindow.showMessage("");
     }
 
     private void printBar()
     {
-        console.printLine(format(BAR_FORMAT, 0).replace("0","-"));
+        mainWindow.showMessage(format(BAR_FORMAT, 0).replace("0", "-"));
     }
 
 }

@@ -1,17 +1,17 @@
 package checkspace.commands;
 
-import checkspace.gui.Console;
+import checkspace.gui.MainWindow;
 
 /** Termina a execução do aplicativo. **/
 public class ExitCommand extends Command
 {
     private static final String COMMAND = "s";
 
-    private final Console console;
+    private final MainWindow mainWindow;
 
-    public ExitCommand(Console console)
+    public ExitCommand(MainWindow mainWindow)
     {
-        this.console = console;
+        this.mainWindow = mainWindow;
     }
 
     @Override
@@ -29,7 +29,7 @@ public class ExitCommand extends Command
     @Override
     public boolean execute(String line)
     {
-        console.printLine("Terminando CheckSpace...");
+        mainWindow.showMessage("Terminando CheckSpace...");
 
         // Termina a aplicação.
         return false;
