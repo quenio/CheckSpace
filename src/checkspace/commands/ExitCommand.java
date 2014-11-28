@@ -1,37 +1,39 @@
 package checkspace.commands;
 
-import checkspace.gui.MainWindow;
+import checkspace.gui.IO;
 
-/** Termina a execução do aplicativo. **/
+/**
+ * Termina a execução do aplicativo. *
+ */
 public class ExitCommand extends Command
 {
-    private static final String COMMAND = "s";
+  private static final String COMMAND = "s";
 
-    private final MainWindow mainWindow;
+  private final IO io;
 
-    public ExitCommand(MainWindow mainWindow)
-    {
-        this.mainWindow = mainWindow;
-    }
+  public ExitCommand(IO io)
+  {
+    this.io = io;
+  }
 
-    @Override
-    public String getHelpLine()
-    {
-        return COMMAND + ": Termina a execução do aplicativo.";
-    }
+  @Override
+  public String getHelpLine()
+  {
+    return COMMAND + ": Termina a execução do aplicativo.";
+  }
 
-    @Override
-    public boolean accepts(String line)
-    {
-        return line.equals(COMMAND);
-    }
+  @Override
+  public boolean accepts(String line)
+  {
+    return line.equals(COMMAND);
+  }
 
-    @Override
-    public boolean execute(String line)
-    {
-        mainWindow.showMessage("Terminando CheckSpace...");
+  @Override
+  public boolean execute(String line)
+  {
+    io.showMessage("Terminando CheckSpace...");
 
-        // Termina a aplicação.
-        return false;
-    }
+    // Termina a aplicação.
+    return false;
+  }
 }

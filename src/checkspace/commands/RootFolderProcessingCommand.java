@@ -1,6 +1,6 @@
 package checkspace.commands;
 
-import checkspace.gui.MainWindow;
+import checkspace.gui.IO;
 import checkspace.processing.RootFolder;
 import checkspace.processing.RootFolderProcessor;
 import checkspace.reports.UsageReport;
@@ -13,13 +13,13 @@ public class RootFolderProcessingCommand extends Command
 {
   private static final String COMMAND = "p";
 
-  private final MainWindow mainWindow;
+  private final IO io;
   private final RootFolderProcessor rootFolderProcessor;
   private final UsageReport usageReport;
 
-  public RootFolderProcessingCommand(MainWindow mainWindow, RootFolderProcessor rootFolderProcessor, UsageReport usageReport)
+  public RootFolderProcessingCommand(IO io, RootFolderProcessor rootFolderProcessor, UsageReport usageReport)
   {
-    this.mainWindow = mainWindow;
+    this.io = io;
     this.rootFolderProcessor = rootFolderProcessor;
     this.usageReport = usageReport;
   }
@@ -44,14 +44,14 @@ public class RootFolderProcessingCommand extends Command
 
   public boolean execute()
   {
-    final String path = readRootFolderPath(mainWindow);
+    final String path = readRootFolderPath(io);
     if (folderNotFound(path))
     {
-      mainWindow.showMessage("\nA pasta digitada não se encontra neste computador: ", path);
+      io.showMessage("\nA pasta digitada não se encontra neste computador: ", path);
     }
     else
     {
-      mainWindow.showMessage("\nAnalisando pasta raiz...");
+      io.showMessage("\nAnalisando pasta raiz...");
       final RootFolder rootFolder = rootFolderProcessor.process(path);
       usageReport.setRootFolder(rootFolder);
       usageReport.print();
@@ -61,11 +61,11 @@ public class RootFolderProcessingCommand extends Command
     return true;
   }
 
-  private String readRootFolderPath(MainWindow mainWindow)
+  private String readRootFolderPath(IO io)
   {
     final String home = System.getProperty("user.home");
     final String message = format("Digite o caminho da pasta a ser analisada (pressione ENTER para '%s'):", home);
-    final String line = mainWindow.askForInput(message);
+    final String line = io.askForInput(message);
     final String path = line.equals("") ? home : line;
 
     return line.startsWith("/") ? path : (home + File.separator + path);
