@@ -1,5 +1,6 @@
 package checkspace.app;
 
+import checkspace.analysis.FolderAnalysisEventHandler;
 import checkspace.analysis.FolderAnalysisService;
 import checkspace.gui.Controller;
 import javafx.beans.property.ReadOnlyStringProperty;
@@ -9,13 +10,15 @@ import javafx.scene.control.TextField;
 public class MainController implements Controller
 {
   private final FolderAnalysisService folderAnalysisService;
+  private final FolderAnalysisEventHandler folderAnalysisEventHandler;
 
   @FXML
   private TextField folderPathTextField;
 
-  public MainController(FolderAnalysisService folderAnalysisService)
+  public MainController(FolderAnalysisService folderAnalysisService, FolderAnalysisEventHandler folderAnalysisEventHandler)
   {
     this.folderAnalysisService = folderAnalysisService;
+    this.folderAnalysisEventHandler = folderAnalysisEventHandler;
   }
 
   @FXML
@@ -33,6 +36,7 @@ public class MainController implements Controller
   @FXML
   public void initialize()
   {
+    folderAnalysisService.setOnSucceeded(folderAnalysisEventHandler);
     folderAnalysisService.folderPathProperty().bind(folderPathTextField.textProperty());
     folderPathTextField.setText(System.getProperty("user.home"));
   }

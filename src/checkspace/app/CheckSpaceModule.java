@@ -37,23 +37,23 @@ public class CheckSpaceModule
 
   @Provides
   @Singleton
-  Controller mainController(FolderAnalysisService folderAnalysisService)
+  Controller mainController(FolderAnalysisService folderAnalysisService, FolderAnalysisEventHandler folderAnalysisEventHandler)
   {
-    return new MainController(folderAnalysisService);
+    return new MainController(folderAnalysisService, folderAnalysisEventHandler);
   }
 
   @Provides
   @Singleton
-  FolderAnalysisService folderAnalysisService(FolderAnalysisEventHandler folderAnalysisEventHandler)
+  FolderAnalysisService folderAnalysisService()
   {
-    return new FolderAnalysisService(folderAnalysisEventHandler);
+    return new FolderAnalysisService();
   }
 
   @Provides
   @Singleton
-  FolderAnalysisEventHandler folderAnalysisEventHandler(UsageReport usageReport)
+  FolderAnalysisEventHandler folderAnalysisEventHandler(UsageReport usageReport, FolderAnalysisService folderAnalysisService)
   {
-    return new FolderAnalysisEventHandler(usageReport);
+    return new FolderAnalysisEventHandler(usageReport, folderAnalysisService);
   }
 
   @Provides

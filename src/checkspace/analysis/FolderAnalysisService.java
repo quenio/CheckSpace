@@ -9,11 +9,6 @@ public class FolderAnalysisService extends Service<FolderAnalysis>
 {
   private final StringProperty folderPath = new SimpleStringProperty();
 
-  public FolderAnalysisService(FolderAnalysisEventHandler folderAnalysisEventHandler)
-  {
-    setOnSucceeded(folderAnalysisEventHandler);
-  }
-
   public StringProperty folderPathProperty()
   {
     return folderPath;
