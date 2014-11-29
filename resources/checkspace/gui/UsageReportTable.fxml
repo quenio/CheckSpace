@@ -1,0 +1,20 @@
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<TableView
+  xmlns:fx="http://javafx.com/fxml"
+  fx:controller="checkspace.app.UsageReportTableController">
+  <columns>
+    <TableColumn
+      fx:id="nameColumn"
+      text="%usageReport.name"
+      prefWidth="300"/>
+    <TableColumn
+      fx:id="spaceColumn"
+      text="%usageReport.space"
+      minWidth="120"/>
+    <TableColumn
+      fx:id="lastAccessColumn"
+      text="%usageReport.lastAccess"
+      prefWidth="150"/>
+  </columns>
+</TableView>

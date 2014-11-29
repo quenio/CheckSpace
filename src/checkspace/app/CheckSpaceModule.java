@@ -45,6 +45,13 @@ public class CheckSpaceModule
     return new MainController(folderAnalysisService, folderAnalysisEventHandler);
   }
 
+  @Provides(type = Provides.Type.SET)
+  @Singleton
+  Controller tableController()
+  {
+    return new UsageReportTableController();
+  }
+
   @Provides
   @Singleton
   FolderAnalysisService folderAnalysisService(final FolderAnalysisTask.Factory taskFactory)

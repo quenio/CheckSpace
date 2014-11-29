@@ -4,6 +4,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.JavaFXBuilderFactory;
 import javafx.scene.Group;
 import javafx.scene.Parent;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 import java.net.URL;
@@ -31,11 +32,12 @@ public class FXMLLayoutLoader implements LayoutLoader
   {
     try
     {
+      //noinspection ConstantConditions
       final FXMLLoader fxmlLoader = new FXMLLoader(
         getResourceOfType(LAYOUT_FILE_EXT, resourceName),
         resourceBundle,
         new JavaFXBuilderFactory(),
-        controllerClass -> controllerRegistry.get(controllerClass));
+        controllerClass -> findController(controllerClass));
       return fxmlLoader.load();
     }
     catch (final IOException exception)
@@ -43,6 +45,21 @@ public class FXMLLayoutLoader implements LayoutLoader
       exception.printStackTrace();
       return new Group();
     }
+  }
+
+  @Nullable
+  private Controller findController(final Class<?> controllerClass)
+  {
+    final Controller controller = controllerRegistry.get(controllerClass);
+    if (controller != null)
+    {
+      controller.onLayoutLoad(this);
+    }
+    else
+    {
+      System.out.println("WARNING: Expected controller not found: " + controllerClass.getCanonicalName());
+    }
+    return controller;
   }
 
   @Override
