@@ -1,9 +1,11 @@
 package checkspace.app;
 
-import checkspace.annotations.Main;
+import checkspace.analysis.FolderAnalysisEventHandler;
+import checkspace.analysis.FolderAnalysisService;
 import checkspace.gui.Controller;
-import checkspace.gui.IO;
 import checkspace.gui.Window;
+import checkspace.reports.IO;
+import checkspace.reports.UsageReport;
 import dagger.Module;
 import dagger.Provides;
 
@@ -21,26 +23,50 @@ public class CheckSpaceModule
 
   @Provides
   @Singleton
-  @Main
-  public ResourceBundle getMainResourceBundle()
+  Window mainWindow(ResourceBundle resourceBundle, Controller mainController)
+  {
+    return new Window(resourceBundle, MAIN_WINDOW_RESOURCE_NAME, mainController, MAIN_WINDOW_WIDTH, MAIN_WINDOW_HEIGHT);
+  }
+
+  @Provides
+  @Singleton
+  ResourceBundle mainResourceBundle()
   {
     return ResourceBundle.getBundle(MAIN_BUNDLE_NAME);
   }
 
   @Provides
   @Singleton
-  @Main
-  public Controller provideMainController()
+  Controller mainController(FolderAnalysisService folderAnalysisService)
   {
-    return new MainController(new IO());
+    return new MainController(folderAnalysisService);
   }
 
   @Provides
   @Singleton
-  @Main
-  public Window provideMainWindow(@Main ResourceBundle resourceBundle, @Main Controller mainController)
+  FolderAnalysisService folderAnalysisService(FolderAnalysisEventHandler folderAnalysisEventHandler)
   {
-    return new Window(resourceBundle, MAIN_WINDOW_RESOURCE_NAME, mainController, MAIN_WINDOW_WIDTH, MAIN_WINDOW_HEIGHT);
+    return new FolderAnalysisService(folderAnalysisEventHandler);
   }
 
+  @Provides
+  @Singleton
+  FolderAnalysisEventHandler folderAnalysisEventHandler(UsageReport usageReport)
+  {
+    return new FolderAnalysisEventHandler(usageReport);
+  }
+
+  @Provides
+  @Singleton
+  UsageReport usageReport(IO io)
+  {
+    return new UsageReport(io);
+  }
+
+  @Provides
+  @Singleton
+  IO io()
+  {
+    return new IO();
+  }
 }

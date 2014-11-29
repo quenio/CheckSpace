@@ -1,24 +1,27 @@
 package checkspace.analysis;
 
-import checkspace.reports.UsageReport;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 
 public class FolderAnalysisService extends Service<FolderAnalysis>
 {
-  private final StringProperty folderPathProperty;
+  private final StringProperty folderPath = new SimpleStringProperty();
 
-  public FolderAnalysisService(StringProperty folderPathProperty, UsageReport usageReport)
+  public FolderAnalysisService(FolderAnalysisEventHandler folderAnalysisEventHandler)
   {
-    this.folderPathProperty = folderPathProperty;
+    setOnSucceeded(folderAnalysisEventHandler);
+  }
 
-    setOnSucceeded(new FolderAnalysisEventHandler(usageReport));
+  public StringProperty folderPathProperty()
+  {
+    return folderPath;
   }
 
   @Override
   protected Task<FolderAnalysis> createTask()
   {
-    return new FolderAnalysisTask(folderPathProperty.get());
+    return new FolderAnalysisTask(folderPath.get());
   }
 }

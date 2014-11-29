@@ -2,7 +2,6 @@ package checkspace.reports;
 
 import checkspace.analysis.FolderAnalysis;
 import checkspace.analysis.FolderAnalysisItem;
-import checkspace.gui.IO;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;

@@ -1,6 +1,6 @@
 package checkspace.commands;
 
-import checkspace.gui.IO;
+import checkspace.reports.IO;
 
 /**
  * Termina a execução do aplicativo. *

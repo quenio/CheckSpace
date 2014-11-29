@@ -1,6 +1,5 @@
 package checkspace.app;
 
-import checkspace.annotations.Main;
 import checkspace.gui.Window;
 import dagger.ObjectGraph;
 import javafx.application.Application;
@@ -15,7 +14,6 @@ public class CheckSpaceApp extends Application
   private final ObjectGraph objectGraph = ObjectGraph.create(new CheckSpaceModule());
 
   @Inject
-  @Main
   Window mainWindow;
 
   public static void main(String[] args)

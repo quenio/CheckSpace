@@ -1,9 +1,10 @@
-package checkspace.gui;
+package checkspace.reports;
 
 import static java.lang.String.format;
 
 public class IO
 {
+
   public void showMessage(String message)
   {
     System.out.println(message);
