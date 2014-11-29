@@ -24,9 +24,9 @@ public class Window
     this.height = height;
   }
 
-  public void loadLayout(final LayoutLoader layoutLoader, final Controller controller)
+  public void loadLayout(final LayoutLoader layoutLoader)
   {
-    final Parent root = layoutLoader.loadRoot(resourceName, controller);
+    final Parent root = layoutLoader.loadRoot(resourceName);
     scene = new Scene(root, width, height);
 
     final String stylesheet = layoutLoader.loadStylesheet(resourceName);

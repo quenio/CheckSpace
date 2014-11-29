@@ -4,7 +4,7 @@ import javafx.scene.Parent;
 
 public interface LayoutLoader
 {
-  Parent loadRoot(String resourceName, Controller controller);
+  Parent loadRoot(String resourceName);
 
   String loadStylesheet(String resourceName);
 }

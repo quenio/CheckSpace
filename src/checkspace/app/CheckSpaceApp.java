@@ -1,6 +1,5 @@
 package checkspace.app;
 
-import checkspace.gui.Controller;
 import checkspace.gui.LayoutLoader;
 import checkspace.gui.Window;
 import dagger.ObjectGraph;
@@ -17,9 +16,6 @@ public class CheckSpaceApp extends Application
   Window mainWindow;
 
   @Inject
-  Controller mainController;
-
-  @Inject
   LayoutLoader layoutLoader;
 
   public static void main(final String[] args)
@@ -31,7 +27,7 @@ public class CheckSpaceApp extends Application
   public void start(final Stage primaryStage) throws Exception
   {
     objectGraph.inject(this);
-    mainWindow.loadLayout(layoutLoader, mainController);
+    mainWindow.loadLayout(layoutLoader);
     mainWindow.showOn(primaryStage);
   }
 }

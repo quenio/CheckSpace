@@ -7,6 +7,7 @@ import javafx.scene.Parent;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 public class FXMLLayoutLoader implements LayoutLoader
@@ -15,14 +16,18 @@ public class FXMLLayoutLoader implements LayoutLoader
   private static final String STYLESHEET_FILE_EXT = "css";
 
   private final ResourceBundle resourceBundle;
+  private final Map<Class, Controller> controllerRegistry;
 
-  public FXMLLayoutLoader(final ResourceBundle resourceBundle)
+  public FXMLLayoutLoader(
+    final ResourceBundle resourceBundle,
+    final Map<Class, Controller> controllerRegistry)
   {
     this.resourceBundle = resourceBundle;
+    this.controllerRegistry = controllerRegistry;
   }
 
   @Override
-  public Parent loadRoot(final String resourceName, final Controller controller)
+  public Parent loadRoot(final String resourceName)
   {
     try
     {
@@ -30,7 +35,7 @@ public class FXMLLayoutLoader implements LayoutLoader
         getResourceOfType(LAYOUT_FILE_EXT, resourceName),
         resourceBundle,
         new JavaFXBuilderFactory(),
-        param -> controller);
+        controllerClass -> controllerRegistry.get(controllerClass));
       return fxmlLoader.load();
     }
     catch (final IOException exception)

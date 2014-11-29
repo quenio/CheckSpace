@@ -14,7 +14,10 @@ import dagger.Module;
 import dagger.Provides;
 
 import javax.inject.Singleton;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.Set;
 
 @Module(injects = CheckSpaceApp.class)
 public class CheckSpaceModule
@@ -33,7 +36,7 @@ public class CheckSpaceModule
     return new Window(MAIN_WINDOW_RESOURCE_NAME, MAIN_WINDOW_TITLE, MAIN_WINDOW_WIDTH, MAIN_WINDOW_HEIGHT);
   }
 
-  @Provides
+  @Provides(type = Provides.Type.SET)
   @Singleton
   Controller mainController(
     final FolderAnalysisService folderAnalysisService,
@@ -79,9 +82,9 @@ public class CheckSpaceModule
 
   @Provides
   @Singleton
-  LayoutLoader layoutLoader(final ResourceBundle resourceBundle)
+  LayoutLoader layoutLoader(final ResourceBundle resourceBundle, final Map<Class, Controller> controllerRegistry)
   {
-    return new FXMLLayoutLoader(resourceBundle);
+    return new FXMLLayoutLoader(resourceBundle, controllerRegistry);
   }
 
   @Provides
@@ -97,4 +100,17 @@ public class CheckSpaceModule
   {
     return new UTF8Control();
   }
+
+  @Provides
+  @Singleton
+  Map<Class, Controller> controllerRegistry(final Set<Controller> controllers)
+  {
+    final Map<Class, Controller> registry = new HashMap<>();
+    for (final Controller controller : controllers)
+    {
+      registry.put(controller.getClass(), controller);
+    }
+    return registry;
+  }
+
 }
