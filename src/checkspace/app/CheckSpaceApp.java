@@ -1,5 +1,7 @@
 package checkspace.app;
 
+import checkspace.gui.Controller;
+import checkspace.gui.LayoutLoader;
 import checkspace.gui.Window;
 import dagger.ObjectGraph;
 import javafx.application.Application;
@@ -9,12 +11,16 @@ import javax.inject.Inject;
 
 public class CheckSpaceApp extends Application
 {
-  private static final String MAIN_WINDOW_TITLE = "CheckSpace";
-
   private final ObjectGraph objectGraph = ObjectGraph.create(new CheckSpaceModule());
 
   @Inject
   Window mainWindow;
+
+  @Inject
+  Controller mainController;
+
+  @Inject
+  LayoutLoader layoutLoader;
 
   public static void main(final String[] args)
   {
@@ -25,7 +31,7 @@ public class CheckSpaceApp extends Application
   public void start(final Stage primaryStage) throws Exception
   {
     objectGraph.inject(this);
-    primaryStage.setTitle(MAIN_WINDOW_TITLE);
-    mainWindow.showAt(primaryStage);
+    mainWindow.loadLayout(layoutLoader, mainController);
+    mainWindow.showOn(primaryStage);
   }
 }

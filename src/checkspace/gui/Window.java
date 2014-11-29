@@ -1,61 +1,43 @@
 package checkspace.gui;
 
-import javafx.fxml.FXMLLoader;
-import javafx.fxml.JavaFXBuilderFactory;
-import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
-
 public class Window
 {
-  private static final String FXML_FILE_EXT = "fxml";
-  private static final String CSS_FILE_EXT = "css";
-
-  private final Scene scene;
+  private final String resourceName;
+  private final String title;
+  private final double width;
+  private final double height;
+  private Scene scene;
 
   public Window(
-    ResourceBundle resourceBundle,
-    String resourceName,
-    Controller controller,
-    double width,
-    double height)
+    final String resourceName,
+    final String title,
+    final double width,
+    final double height)
   {
-    final Parent root = loadRoot(resourceBundle, resourceName, controller);
+    this.resourceName = resourceName;
+    this.title = title;
+    this.width = width;
+    this.height = height;
+  }
 
+  public void loadLayout(final LayoutLoader layoutLoader, final Controller controller)
+  {
+    final Parent root = layoutLoader.loadRoot(resourceName, controller);
     scene = new Scene(root, width, height);
-    scene.getStylesheets().add(getResourceOfType(CSS_FILE_EXT, resourceName).toExternalForm());
+
+    final String stylesheet = layoutLoader.loadStylesheet(resourceName);
+    scene.getStylesheets().add(stylesheet);
   }
 
-  private Parent loadRoot(ResourceBundle resourceBundle, String resourceName, Controller controller)
+  public void showOn(final Stage stage)
   {
-    try
-    {
-      final FXMLLoader fxmlLoader = new FXMLLoader(
-        getResourceOfType(FXML_FILE_EXT, resourceName),
-        resourceBundle,
-        new JavaFXBuilderFactory(),
-        param -> controller);
-      return fxmlLoader.load();
-    }
-    catch (IOException exception)
-    {
-      exception.printStackTrace();
-      return new Group();
-    }
-  }
-
-  private URL getResourceOfType(String resourceType, String resourceName)
-  {
-    return getClass().getResource(resourceName + "." + resourceType);
-  }
-
-  public void showAt(Stage stage)
-  {
+    stage.setTitle(title);
+    stage.setWidth(width);
+    stage.setHeight(height);
     stage.setScene(scene);
     stage.show();
   }

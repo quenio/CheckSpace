@@ -5,6 +5,8 @@ import checkspace.analysis.FolderAnalysisService;
 import checkspace.analysis.FolderAnalysisTask;
 import checkspace.bundles.UTF8Control;
 import checkspace.gui.Controller;
+import checkspace.gui.FXMLLayoutLoader;
+import checkspace.gui.LayoutLoader;
 import checkspace.gui.Window;
 import checkspace.reports.IO;
 import checkspace.reports.UsageReport;
@@ -20,28 +22,15 @@ public class CheckSpaceModule
   private static final String MAIN_BUNDLE_NAME = "checkspace.bundles.CheckSpace";
 
   private static final String MAIN_WINDOW_RESOURCE_NAME = "MainWindow";
+  private static final String MAIN_WINDOW_TITLE = "CheckSpace";
   private static final int MAIN_WINDOW_WIDTH = 500;
   private static final int MAIN_WINDOW_HEIGHT = 400;
 
   @Provides
   @Singleton
-  Window mainWindow(final ResourceBundle resourceBundle, final Controller mainController)
+  Window mainWindow()
   {
-    return new Window(resourceBundle, MAIN_WINDOW_RESOURCE_NAME, mainController, MAIN_WINDOW_WIDTH, MAIN_WINDOW_HEIGHT);
-  }
-
-  @Provides
-  @Singleton
-  ResourceBundle mainResourceBundle(final UTF8Control utf8Control)
-  {
-    return ResourceBundle.getBundle(MAIN_BUNDLE_NAME, utf8Control);
-  }
-
-  @Provides
-  @Singleton
-  UTF8Control utf8Control()
-  {
-    return new UTF8Control();
+    return new Window(MAIN_WINDOW_RESOURCE_NAME, MAIN_WINDOW_TITLE, MAIN_WINDOW_WIDTH, MAIN_WINDOW_HEIGHT);
   }
 
   @Provides
@@ -86,5 +75,26 @@ public class CheckSpaceModule
   IO io()
   {
     return new IO();
+  }
+
+  @Provides
+  @Singleton
+  LayoutLoader layoutLoader(final ResourceBundle resourceBundle)
+  {
+    return new FXMLLayoutLoader(resourceBundle);
+  }
+
+  @Provides
+  @Singleton
+  ResourceBundle resourceBundle(final UTF8Control utf8Control)
+  {
+    return ResourceBundle.getBundle(MAIN_BUNDLE_NAME, utf8Control);
+  }
+
+  @Provides
+  @Singleton
+  UTF8Control utf8Control()
+  {
+    return new UTF8Control();
   }
 }
