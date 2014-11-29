@@ -23,7 +23,7 @@ public class CheckSpaceModule
 
   private static final String MAIN_WINDOW_RESOURCE_NAME = "MainWindow";
   private static final String MAIN_WINDOW_TITLE = "CheckSpace";
-  private static final int MAIN_WINDOW_WIDTH = 500;
+  private static final int MAIN_WINDOW_WIDTH = 580;
   private static final int MAIN_WINDOW_HEIGHT = 400;
 
   @Provides

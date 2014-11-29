@@ -6,11 +6,15 @@ import checkspace.gui.Controller;
 import javafx.beans.property.ReadOnlyStringProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.GridPane;
 
 public class MainController implements Controller
 {
   private final FolderAnalysisService folderAnalysisService;
   private final FolderAnalysisEventHandler folderAnalysisEventHandler;
+
+  @FXML
+  private GridPane analyzeFolderPane;
 
   @FXML
   private TextField folderPathTextField;
