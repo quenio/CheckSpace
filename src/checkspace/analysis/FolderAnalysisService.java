@@ -8,6 +8,12 @@ import javafx.concurrent.Task;
 public class FolderAnalysisService extends Service<FolderAnalysis>
 {
   private final StringProperty folderPath = new SimpleStringProperty();
+  private final FolderAnalysisTask.Factory folderAnalysisTaskFactory;
+
+  public FolderAnalysisService(final FolderAnalysisTask.Factory folderAnalysisTaskFactory)
+  {
+    this.folderAnalysisTaskFactory = folderAnalysisTaskFactory;
+  }
 
   public StringProperty folderPathProperty()
   {
@@ -17,6 +23,6 @@ public class FolderAnalysisService extends Service<FolderAnalysis>
   @Override
   protected Task<FolderAnalysis> createTask()
   {
-    return new FolderAnalysisTask(folderPath.get());
+    return folderAnalysisTaskFactory.create(folderPath.get());
   }
 }

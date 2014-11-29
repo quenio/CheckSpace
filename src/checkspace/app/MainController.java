@@ -15,7 +15,9 @@ public class MainController implements Controller
   @FXML
   private TextField folderPathTextField;
 
-  public MainController(FolderAnalysisService folderAnalysisService, FolderAnalysisEventHandler folderAnalysisEventHandler)
+  public MainController(
+    final FolderAnalysisService folderAnalysisService,
+    final FolderAnalysisEventHandler folderAnalysisEventHandler)
   {
     this.folderAnalysisService = folderAnalysisService;
     this.folderAnalysisEventHandler = folderAnalysisEventHandler;
@@ -44,6 +46,7 @@ public class MainController implements Controller
   @FXML
   public void analyzeFolder()
   {
+    folderAnalysisService.reset();
     folderAnalysisService.start();
   }
 

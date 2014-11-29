@@ -8,16 +8,14 @@ import javafx.event.EventHandler;
 public class FolderAnalysisEventHandler implements EventHandler<WorkerStateEvent>
 {
   private final UsageReport usageReport;
-  private final FolderAnalysisService folderAnalysisService;
 
-  public FolderAnalysisEventHandler(UsageReport usageReport, FolderAnalysisService folderAnalysisService)
+  public FolderAnalysisEventHandler(final UsageReport usageReport)
   {
     this.usageReport = usageReport;
-    this.folderAnalysisService = folderAnalysisService;
   }
 
   @Override
-  public void handle(WorkerStateEvent event)
+  public void handle(final WorkerStateEvent event)
   {
     final Worker worker = event.getSource();
     if (worker.getState() == Worker.State.SUCCEEDED)
@@ -25,7 +23,6 @@ public class FolderAnalysisEventHandler implements EventHandler<WorkerStateEvent
       final FolderAnalysis folderAnalysis = (FolderAnalysis) worker.getValue();
       usageReport.setFolderAnalysis(folderAnalysis);
       usageReport.print();
-      folderAnalysisService.reset();
     }
   }
 }

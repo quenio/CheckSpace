@@ -4,38 +4,31 @@ import javafx.concurrent.Task;
 
 import java.io.File;
 import java.util.Date;
+import java.util.ResourceBundle;
 
 /** Analisa todos os arquivos e sub-pastas no caminho especificado. */
 public class FolderAnalysisTask extends Task<FolderAnalysis>
 {
+  @FunctionalInterface
+  public interface Factory
+  {
+    FolderAnalysisTask create(String path);
+  }
+
+  private final ResourceBundle resourceBundle;
   private final File rootFolder;
 
-  public FolderAnalysisTask(String path)
+  public FolderAnalysisTask(final ResourceBundle resourceBundle, final String path)
   {
+    this.resourceBundle = resourceBundle;
     this.rootFolder = new File(path);
   }
 
   @Override
   protected FolderAnalysis call() throws Exception
   {
-    updateMessage("message.analysingFolder");
+    updateMessageWithKey("message.analysingFolder");
 
-    final FolderAnalysis folderAnalysis = analyzeFiles();
-
-    if (folderAnalysis.getItems().length == 0)
-    {
-      updateMessage(String.format("Pasta vazia ou não existe: %s", rootFolder.getAbsoluteFile()));
-    }
-    else
-    {
-      updateMessage("message.analysisComplete");
-    }
-
-    return folderAnalysis;
-  }
-
-  private FolderAnalysis analyzeFiles()
-  {
     return new FolderAnalysis(map(listFiles()));
   }
 
@@ -44,39 +37,48 @@ public class FolderAnalysisTask extends Task<FolderAnalysis>
     return rootFolder.isDirectory() ? rootFolder.listFiles() : new File[0];
   }
 
-  private FolderAnalysisItem[] map(File[] files)
+  private FolderAnalysisItem[] map(final File[] files)
   {
     final FolderAnalysisItem[] items = new FolderAnalysisItem[files.length];
-
     int i = 0;
-    for (File file : files)
+    for (final File file : files)
     {
       if (isCancelled())
       {
-        updateMessage("Análise canceldada.");
+        updateMessageWithKey("message.analysisCancelled");
       }
       else
       {
-        updateMessage("Analisando: " + file.getName());
+        updateMessageWithKey("message.analysingItem", file.getName());
         items[i++] = map(file);
       }
+    }
+
+    if (items.length == 0)
+    {
+      updateMessageWithKey("message.emptyFolder", rootFolder.getAbsoluteFile());
+    }
+    else
+    {
+      updateMessageWithKey("message.analysisComplete");
     }
 
     return items;
   }
 
-  private FolderAnalysisItem map(File file)
+  private FolderAnalysisItem map(final File file)
   {
     return new FolderAnalysisItem(file.getName(), spaceOf(file), lastAccessOf(file));
   }
 
-  private long spaceOf(File file)
+  private long spaceOf(final File file)
   {
-    if (file.isDirectory())
+    final File[] files = file.listFiles();
+    if (files != null)
     {
       long space = 0;
 
-      for (File f : file.listFiles())
+      for (final File f : files)
       {
         space += spaceOf(f);
       }
@@ -89,26 +91,37 @@ public class FolderAnalysisTask extends Task<FolderAnalysis>
     }
   }
 
-  private Date lastAccessOf(File file)
+  private Date lastAccessOf(final File file)
   {
     return new Date(lastAccessOf(file, 0));
   }
 
-  private long lastAccessOf(File file, long lastAccess)
+  private long lastAccessOf(final File file, long lastAccess)
   {
     if (lastAccess < file.lastModified())
     {
       lastAccess = file.lastModified();
     }
 
-    if (file.isDirectory())
+    final File[] files = file.listFiles();
+    if (files != null)
     {
-      for (File f : file.listFiles())
+      for (final File f : files)
       {
         lastAccess = lastAccessOf(f, lastAccess);
       }
     }
 
     return lastAccess;
+  }
+
+  private void updateMessageWithKey(final String key)
+  {
+    updateMessage(resourceBundle.getString(key));
+  }
+
+  private void updateMessageWithKey(final String key, final Object... args)
+  {
+    updateMessage(String.format(resourceBundle.getString(key), args));
   }
 }

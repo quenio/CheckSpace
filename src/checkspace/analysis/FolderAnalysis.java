@@ -4,9 +4,9 @@ import java.util.Arrays;
 
 public class FolderAnalysis
 {
-  private FolderAnalysisItem[] items;
+  private final FolderAnalysisItem[] items;
 
-  public FolderAnalysis(FolderAnalysisItem[] items)
+  public FolderAnalysis(final FolderAnalysisItem[] items)
   {
     this.items = items;
   }

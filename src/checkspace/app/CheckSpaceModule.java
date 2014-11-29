@@ -2,6 +2,8 @@ package checkspace.app;
 
 import checkspace.analysis.FolderAnalysisEventHandler;
 import checkspace.analysis.FolderAnalysisService;
+import checkspace.analysis.FolderAnalysisTask;
+import checkspace.bundles.UTF8Control;
 import checkspace.gui.Controller;
 import checkspace.gui.Window;
 import checkspace.reports.IO;
@@ -23,42 +25,58 @@ public class CheckSpaceModule
 
   @Provides
   @Singleton
-  Window mainWindow(ResourceBundle resourceBundle, Controller mainController)
+  Window mainWindow(final ResourceBundle resourceBundle, final Controller mainController)
   {
     return new Window(resourceBundle, MAIN_WINDOW_RESOURCE_NAME, mainController, MAIN_WINDOW_WIDTH, MAIN_WINDOW_HEIGHT);
   }
 
   @Provides
   @Singleton
-  ResourceBundle mainResourceBundle()
+  ResourceBundle mainResourceBundle(final UTF8Control utf8Control)
   {
-    return ResourceBundle.getBundle(MAIN_BUNDLE_NAME);
+    return ResourceBundle.getBundle(MAIN_BUNDLE_NAME, utf8Control);
   }
 
   @Provides
   @Singleton
-  Controller mainController(FolderAnalysisService folderAnalysisService, FolderAnalysisEventHandler folderAnalysisEventHandler)
+  UTF8Control utf8Control()
+  {
+    return new UTF8Control();
+  }
+
+  @Provides
+  @Singleton
+  Controller mainController(
+    final FolderAnalysisService folderAnalysisService,
+    final FolderAnalysisEventHandler folderAnalysisEventHandler)
   {
     return new MainController(folderAnalysisService, folderAnalysisEventHandler);
   }
 
   @Provides
   @Singleton
-  FolderAnalysisService folderAnalysisService()
+  FolderAnalysisService folderAnalysisService(final FolderAnalysisTask.Factory taskFactory)
   {
-    return new FolderAnalysisService();
+    return new FolderAnalysisService(taskFactory);
   }
 
   @Provides
   @Singleton
-  FolderAnalysisEventHandler folderAnalysisEventHandler(UsageReport usageReport, FolderAnalysisService folderAnalysisService)
+  FolderAnalysisTask.Factory folderAnalysisTaskFactory(final ResourceBundle resourceBundle)
   {
-    return new FolderAnalysisEventHandler(usageReport, folderAnalysisService);
+    return path -> new FolderAnalysisTask(resourceBundle, path);
   }
 
   @Provides
   @Singleton
-  UsageReport usageReport(IO io)
+  FolderAnalysisEventHandler folderAnalysisEventHandler(final UsageReport usageReport)
+  {
+    return new FolderAnalysisEventHandler(usageReport);
+  }
+
+  @Provides
+  @Singleton
+  UsageReport usageReport(final IO io)
   {
     return new UsageReport(io);
   }
