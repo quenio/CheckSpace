@@ -29,12 +29,7 @@ public class FolderAnalysisTask extends Task<FolderAnalysis>
   {
     updateMessageWithKey("message.analysingFolder");
 
-    return new FolderAnalysis(map(listFiles()));
-  }
-
-  private File[] listFiles()
-  {
-    return rootFolder.isDirectory() ? rootFolder.listFiles() : new File[0];
+    return new FolderAnalysis(map(childrenOf(rootFolder)));
   }
 
   private FolderAnalysisItem[] map(final File[] files)
@@ -73,12 +68,11 @@ public class FolderAnalysisTask extends Task<FolderAnalysis>
 
   private long spaceOf(final File file)
   {
-    final File[] files = file.listFiles();
-    if (files != null)
+    if (file.isDirectory())
     {
       long space = 0;
 
-      for (final File f : files)
+      for (final File f : childrenOf(file))
       {
         space += spaceOf(f);
       }
@@ -103,16 +97,18 @@ public class FolderAnalysisTask extends Task<FolderAnalysis>
       lastAccess = file.lastModified();
     }
 
-    final File[] files = file.listFiles();
-    if (files != null)
+    for (final File f : childrenOf(file))
     {
-      for (final File f : files)
-      {
-        lastAccess = lastAccessOf(f, lastAccess);
-      }
+      lastAccess = lastAccessOf(f, lastAccess);
     }
 
     return lastAccess;
+  }
+
+  private File[] childrenOf(final File folder)
+  {
+    final File[] files = folder.listFiles();
+    return files == null ? new File[0] : files;
   }
 
   private void updateMessageWithKey(final String key)
