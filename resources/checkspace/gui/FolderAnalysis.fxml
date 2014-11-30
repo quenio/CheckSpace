@@ -6,6 +6,11 @@
   fx:controller="checkspace.analysis.FolderAnalysisController">
   <TextField fx:id="folderPathTextField"/>
   <Button
-    text="%analyzeFolder.buttonText"
-    onAction="#analyzeFolder"/>
+    fx:id="startButton"
+    text="%startFolderAnalysis.buttonText"
+    onAction="#startFolderAnalysis"/>
+  <Button
+    fx:id="cancelButton"
+    text="%cancelFolderAnalysis.buttonText"
+    onAction="#cancelFolderAnalysis"/>
 </HBox>
