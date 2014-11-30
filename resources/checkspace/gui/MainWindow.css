@@ -1,3 +1,19 @@
-#analyzeFolderPane {
-    -fx-background-color: white;
+#analyzeFolderPane
+{
+  -fx-background-color: white;
+}
+
+.name-column
+{
+  -fx-alignment: center-left;
+}
+
+.space-column
+{
+  -fx-alignment: center-right;
+}
+
+.last-access-column
+{
+  -fx-alignment: center;
 }

@@ -8,14 +8,17 @@
     <TableColumn
       fx:id="nameColumn"
       text="%usageReport.name"
-      prefWidth="300"/>
+      prefWidth="300"
+      styleClass="name-column"/>
     <TableColumn
       fx:id="spaceColumn"
       text="%usageReport.space"
-      minWidth="120"/>
+      minWidth="120"
+      styleClass="space-column"/>
     <TableColumn
       fx:id="lastAccessColumn"
       text="%usageReport.lastAccess"
-      prefWidth="150"/>
+      prefWidth="150"
+      styleClass="last-access-column"/>
   </columns>
 </TableView>
