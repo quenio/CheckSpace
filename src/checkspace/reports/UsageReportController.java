@@ -32,8 +32,9 @@ public class UsageReportController extends Controller
   protected void initialize()
   {
     folderAnalysis.bindListToItems(usageReport.getItems());
-    nameColumn.setCellValueFactory(new StringColumnValueFactory(FolderAnalysisItem::getName));
-    spaceColumn.setCellValueFactory(new SpaceColumnValueFactory(FolderAnalysisItem::getSpace));
-    lastAccessColumn.setCellValueFactory(new DateColumnValueFactory(FolderAnalysisItem::getLastAccess));
+    ColumnValue.of(nameColumn, FolderAnalysisItem::getName);
+    ColumnValue.of(spaceColumn, FolderAnalysisItem::getSpace, Format::space);
+    ColumnValue.of(lastAccessColumn, FolderAnalysisItem::getLastAccess, Format::date);
   }
+
 }

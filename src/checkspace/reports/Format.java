@@ -1,8 +1,10 @@
 package checkspace.reports;
 
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
-public class SpaceColumnValueFactory extends FolderAnalysisItemValueFactory<Long, String>
+public class Format
 {
   private static final float KILOBYTE = 1024f;
   private static final float MEGABYTE = KILOBYTE * KILOBYTE;
@@ -13,19 +15,14 @@ public class SpaceColumnValueFactory extends FolderAnalysisItemValueFactory<Long
   private static final String KILOBYTE_SUFFIX = "KB";
 
   private static final DecimalFormat NUMBER_FORMAT = new DecimalFormat("###,###.##");
+  private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yy HH:mm:ss");
 
-  public SpaceColumnValueFactory(final ColumnValueResolver<Long> columnValueResolver)
+  public static String date(final Date date)
   {
-    super(columnValueResolver);
+    return DATE_FORMAT.format(date);
   }
 
-  @Override
-  public String formatColumnValue(final Long space)
-  {
-    return formattedSpace(space);
-  }
-
-  private String formattedSpace(final long space)
+  public static String space(final long space)
   {
     final float number;
     final String suffix;
@@ -48,5 +45,4 @@ public class SpaceColumnValueFactory extends FolderAnalysisItemValueFactory<Long
 
     return NUMBER_FORMAT.format(number) + " " + suffix;
   }
-
 }
