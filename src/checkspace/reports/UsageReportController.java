@@ -32,9 +32,9 @@ public class UsageReportController extends Controller
   protected void initialize()
   {
     folderAnalysis.bindListToItems(usageReport.getItems());
-    ColumnValue.of(nameColumn, FolderAnalysisItem::getName);
-    ColumnValue.of(spaceColumn, FolderAnalysisItem::getSpace, Format::space);
-    ColumnValue.of(lastAccessColumn, FolderAnalysisItem::getLastAccess, Format::date);
+    ColumnBinding.of(nameColumn, FolderAnalysisItem::getName);
+    ColumnBinding.of(spaceColumn, FolderAnalysisItem::getSpace, Format::space);
+    ColumnBinding.of(lastAccessColumn, FolderAnalysisItem::getLastAccess, Format::date);
   }
 
 }

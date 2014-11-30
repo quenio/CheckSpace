@@ -6,7 +6,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.scene.control.TableColumn;
 import javafx.util.Callback;
 
-public class ColumnValue
+public class ColumnBinding
 {
   public static <T> void of(
     final TableColumn<FolderAnalysisItem, String> column,
