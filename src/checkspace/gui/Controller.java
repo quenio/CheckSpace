@@ -2,7 +2,8 @@ package checkspace.gui;
 
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,11 +22,13 @@ public class Controller
     layoutRoots.put(resourceName, layoutLoader.loadRoot(resourceName));
   }
 
-  protected void addLayoutToPane(final Pane pane, final String resourceName)
+  protected void addLayoutToPane(final HBox pane, final String resourceName)
   {
     if (layoutRoots.containsKey(resourceName))
     {
-      pane.getChildren().add(layoutRoots.get(resourceName));
+      final Parent root = layoutRoots.get(resourceName);
+      pane.getChildren().add(root);
+      HBox.setHgrow(root, Priority.ALWAYS); // Usa todo o espaço horizontal disponível.
       layoutRoots.remove(resourceName);
     }
   }

@@ -1,7 +1,7 @@
 package checkspace.app;
 
 import checkspace.analysis.FolderAnalysis;
-import checkspace.analysis.FolderAnalysisEventHandler;
+import checkspace.analysis.FolderAnalysisController;
 import checkspace.analysis.FolderAnalysisService;
 import checkspace.analysis.FolderAnalysisTask;
 import checkspace.bundles.UTF8Control;
@@ -38,12 +38,18 @@ public class CheckSpaceModule
 
   @Provides(type = Provides.Type.SET)
   @Singleton
-  Controller mainController(
-    final FolderAnalysis folderAnalysis,
-    final FolderAnalysisService folderAnalysisService,
-    final FolderAnalysisEventHandler folderAnalysisEventHandler)
+  Controller mainController(final FolderAnalysisService folderAnalysisService)
   {
-    return new MainController(folderAnalysis, folderAnalysisService, folderAnalysisEventHandler);
+    return new MainController(folderAnalysisService);
+  }
+
+  @Provides(type = Provides.Type.SET)
+  @Singleton
+  Controller folderAnalysisController(
+    final FolderAnalysis folderAnalysis,
+    final FolderAnalysisService folderAnalysisService)
+  {
+    return new FolderAnalysisController(folderAnalysis, folderAnalysisService);
   }
 
   @Provides(type = Provides.Type.SET)
@@ -74,13 +80,6 @@ public class CheckSpaceModule
   FolderAnalysis folderAnalysis()
   {
     return new FolderAnalysis();
-  }
-
-  @Provides
-  @Singleton
-  FolderAnalysisEventHandler folderAnalysisEventHandler()
-  {
-    return new FolderAnalysisEventHandler();
   }
 
   @Provides

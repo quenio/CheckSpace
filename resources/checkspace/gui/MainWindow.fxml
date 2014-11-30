@@ -1,23 +1,14 @@
-<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
 <BorderPane
   xmlns:fx="http://javafx.com/fxml"
   fx:controller="checkspace.app.MainController">
   <top>
-    <HBox fx:id="analyzeFolderPane">
-    <TextField
-        fx:id="folderPathTextField"
-        GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-      <Button
-        GridPane.columnIndex="1" GridPane.rowIndex="0"
-        text="%analyzeFolder.buttonText"
-        onAction="#analyzeFolder"/>
-    </HBox>
+    <HBox fx:id="topPane"/>
   </top>
   <center>
-    <HBox fx:id="mainPage"/>
+    <HBox fx:id="centerPane"/>
   </center>
   <bottom>
     <Label text="${controller.message}"/>
