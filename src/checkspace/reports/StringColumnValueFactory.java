@@ -5,7 +5,7 @@ import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.control.TableColumn;
 
-public class NameColumnValueFactory extends FolderAnalysisItemValueFactory<String, String>
+public class StringColumnValueFactory extends FolderAnalysisItemValueFactory<String, String>
 {
   @Override
   public ObservableValue<String> call(final TableColumn.CellDataFeatures<FolderAnalysisItem, String> row)
@@ -14,15 +14,14 @@ public class NameColumnValueFactory extends FolderAnalysisItemValueFactory<Strin
     return new ReadOnlyObjectWrapper<>(columnValue);
   }
 
-  @Override
-  public String getColumnValue(final FolderAnalysisItem item)
+  public StringColumnValueFactory(final ColumnValueResolver<String> columnValueResolver)
   {
-    return item.getName();
+    super(columnValueResolver);
   }
 
   @Override
   public String formatColumnValue(final String name)
   {
-    return name.trim();
+    return name;
   }
 }

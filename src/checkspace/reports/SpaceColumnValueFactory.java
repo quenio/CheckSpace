@@ -1,7 +1,5 @@
 package checkspace.reports;
 
-import checkspace.analysis.FolderAnalysisItem;
-
 import java.text.DecimalFormat;
 
 public class SpaceColumnValueFactory extends FolderAnalysisItemValueFactory<Long, String>
@@ -16,10 +14,9 @@ public class SpaceColumnValueFactory extends FolderAnalysisItemValueFactory<Long
 
   private static final DecimalFormat NUMBER_FORMAT = new DecimalFormat("###,###.##");
 
-  @Override
-  public Long getColumnValue(final FolderAnalysisItem item)
+  public SpaceColumnValueFactory(final ColumnValueResolver<Long> columnValueResolver)
   {
-    return item.getSpace();
+    super(columnValueResolver);
   }
 
   @Override

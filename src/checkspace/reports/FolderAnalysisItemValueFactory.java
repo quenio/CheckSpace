@@ -9,14 +9,19 @@ import javafx.util.Callback;
 public abstract class FolderAnalysisItemValueFactory<T, S>
   implements Callback<TableColumn.CellDataFeatures<FolderAnalysisItem, S>, ObservableValue<S>>
 {
+  private final ColumnValueResolver<T> columnValueResolver;
+
+  protected FolderAnalysisItemValueFactory(final ColumnValueResolver<T> columnValueResolver)
+  {
+    this.columnValueResolver = columnValueResolver;
+  }
+
   @Override
   public ObservableValue<S> call(final TableColumn.CellDataFeatures<FolderAnalysisItem, S> row)
   {
-    final T columnValue = getColumnValue(row.getValue());
+    final T columnValue = columnValueResolver.getColumnValue(row.getValue());
     return new ReadOnlyObjectWrapper<>(formatColumnValue(columnValue));
   }
-
-  public abstract T getColumnValue(FolderAnalysisItem item);
 
   public abstract S formatColumnValue(T columnValue);
 }
