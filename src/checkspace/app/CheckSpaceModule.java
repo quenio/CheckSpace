@@ -1,5 +1,6 @@
 package checkspace.app;
 
+import checkspace.analysis.FolderAnalysis;
 import checkspace.analysis.FolderAnalysisEventHandler;
 import checkspace.analysis.FolderAnalysisService;
 import checkspace.analysis.FolderAnalysisTask;
@@ -8,8 +9,7 @@ import checkspace.gui.Controller;
 import checkspace.gui.FXMLLayoutLoader;
 import checkspace.gui.LayoutLoader;
 import checkspace.gui.Window;
-import checkspace.reports.IO;
-import checkspace.reports.UsageReport;
+import checkspace.reports.UsageReportController;
 import dagger.Module;
 import dagger.Provides;
 
@@ -39,17 +39,18 @@ public class CheckSpaceModule
   @Provides(type = Provides.Type.SET)
   @Singleton
   Controller mainController(
+    final FolderAnalysis folderAnalysis,
     final FolderAnalysisService folderAnalysisService,
     final FolderAnalysisEventHandler folderAnalysisEventHandler)
   {
-    return new MainController(folderAnalysisService, folderAnalysisEventHandler);
+    return new MainController(folderAnalysis, folderAnalysisService, folderAnalysisEventHandler);
   }
 
   @Provides(type = Provides.Type.SET)
   @Singleton
-  Controller tableController()
+  Controller usageReportController(final FolderAnalysis folderAnalysis)
   {
-    return new UsageReportTableController();
+    return new UsageReportController(folderAnalysis);
   }
 
   @Provides
@@ -61,30 +62,25 @@ public class CheckSpaceModule
 
   @Provides
   @Singleton
-  FolderAnalysisTask.Factory folderAnalysisTaskFactory(final ResourceBundle resourceBundle)
+  FolderAnalysisTask.Factory folderAnalysisTaskFactory(
+    final ResourceBundle resourceBundle,
+    final FolderAnalysis folderAnalysis)
   {
-    return path -> new FolderAnalysisTask(resourceBundle, path);
+    return () -> new FolderAnalysisTask(resourceBundle, folderAnalysis);
   }
 
   @Provides
   @Singleton
-  FolderAnalysisEventHandler folderAnalysisEventHandler(final UsageReport usageReport)
+  FolderAnalysis folderAnalysis()
   {
-    return new FolderAnalysisEventHandler(usageReport);
+    return new FolderAnalysis();
   }
 
   @Provides
   @Singleton
-  UsageReport usageReport(final IO io)
+  FolderAnalysisEventHandler folderAnalysisEventHandler()
   {
-    return new UsageReport(io);
-  }
-
-  @Provides
-  @Singleton
-  IO io()
-  {
-    return new IO();
+    return new FolderAnalysisEventHandler();
   }
 
   @Provides

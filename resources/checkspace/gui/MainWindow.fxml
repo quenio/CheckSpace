@@ -6,18 +6,18 @@
   xmlns:fx="http://javafx.com/fxml"
   fx:controller="checkspace.app.MainController">
   <top>
-    <GridPane fx:id="analyzeFolderPane">
-      <TextField
+    <HBox fx:id="analyzeFolderPane">
+    <TextField
         fx:id="folderPathTextField"
         GridPane.columnIndex="0" GridPane.rowIndex="0"/>
       <Button
         GridPane.columnIndex="1" GridPane.rowIndex="0"
         text="%analyzeFolder.buttonText"
         onAction="#analyzeFolder"/>
-    </GridPane>
+    </HBox>
   </top>
   <center>
-    <FlowPane fx:id="mainPage"/>
+    <HBox fx:id="mainPage"/>
   </center>
   <bottom>
     <Label text="${controller.message}"/>

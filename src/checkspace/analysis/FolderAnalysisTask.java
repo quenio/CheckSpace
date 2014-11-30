@@ -1,67 +1,67 @@
 package checkspace.analysis;
 
 import javafx.concurrent.Task;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.util.Date;
 import java.util.ResourceBundle;
 
 /** Analisa todos os arquivos e sub-pastas no caminho especificado. */
-public class FolderAnalysisTask extends Task<FolderAnalysis>
+public class FolderAnalysisTask extends Task<FolderAnalysis> implements FolderAnalyzer
 {
   @FunctionalInterface
   public interface Factory
   {
-    FolderAnalysisTask create(String path);
+    FolderAnalysisTask create();
   }
 
   private final ResourceBundle resourceBundle;
-  private final File rootFolder;
+  private final FolderAnalysis folderAnalysis;
 
-  public FolderAnalysisTask(final ResourceBundle resourceBundle, final String path)
+  public FolderAnalysisTask(final ResourceBundle resourceBundle, final FolderAnalysis folderAnalysis)
   {
     this.resourceBundle = resourceBundle;
-    this.rootFolder = new File(path);
+    this.folderAnalysis = folderAnalysis;
   }
 
   @Override
   protected FolderAnalysis call() throws Exception
   {
     updateMessageWithKey("message.analysingFolder");
-
-    return new FolderAnalysis(map(childrenOf(rootFolder)));
+    folderAnalysis.analyzeFolder(this);
+    return folderAnalysis;
   }
 
-  private FolderAnalysisItem[] map(final File[] files)
+  @Nullable
+  @Override
+  public FolderAnalysisItem analyzeFile(final File file)
   {
-    final FolderAnalysisItem[] items = new FolderAnalysisItem[files.length];
-    int i = 0;
-    for (final File file : files)
+    if (isCancelled())
     {
-      if (isCancelled())
-      {
-        updateMessageWithKey("message.analysisCancelled");
-      }
-      else
-      {
-        updateMessageWithKey("message.analysingItem", file.getName());
-        items[i++] = map(file);
-      }
-    }
-
-    if (items.length == 0)
-    {
-      updateMessageWithKey("message.emptyFolder", rootFolder.getAbsoluteFile());
+      updateMessageWithKey("message.analysisCancelled");
+      return null;
     }
     else
     {
-      updateMessageWithKey("message.analysisComplete");
+      updateMessageWithKey("message.analysingItem", file.getName());
+      return mapFileToItem(file);
     }
-
-    return items;
   }
 
-  private FolderAnalysisItem map(final File file)
+  @Override
+  public void onEmptyAnalysis(final File folder)
+  {
+    updateMessageWithKey("message.emptyFolder", folder.getAbsoluteFile());
+  }
+
+  @Override
+  public void onSuccessfulAnalysis()
+  {
+    updateMessageWithKey("message.analysisComplete");
+  }
+
+  private FolderAnalysisItem mapFileToItem(final File file)
   {
     return new FolderAnalysisItem(file.getName(), spaceOf(file), lastAccessOf(file));
   }

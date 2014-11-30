@@ -2,7 +2,8 @@
 <?import javafx.scene.control.TableView?>
 <TableView
   xmlns:fx="http://javafx.com/fxml"
-  fx:controller="checkspace.app.UsageReportTableController">
+  fx:controller="checkspace.reports.UsageReportController"
+  fx:id="usageReport">
   <columns>
     <TableColumn
       fx:id="nameColumn"

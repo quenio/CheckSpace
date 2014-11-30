@@ -9,7 +9,7 @@ public class FolderAnalysisItem
   private final long space;
   private final Date lastAccess;
 
-  public FolderAnalysisItem(String name, long space, Date lastAccess)
+  public FolderAnalysisItem(final String name, final long space, final Date lastAccess)
   {
     this.name = name;
     this.space = space;
