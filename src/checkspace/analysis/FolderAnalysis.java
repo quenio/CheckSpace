@@ -46,7 +46,7 @@ public class FolderAnalysis
         }
         else
         {
-          items.add(item);
+          items.add(0, item);
         }
       }
       if (files.length == items.size())
