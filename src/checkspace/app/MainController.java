@@ -65,8 +65,7 @@ public class MainController extends Controller
   @FXML
   public void analyzeFolder()
   {
-    folderAnalysisService.reset();
-    folderAnalysisService.start();
+    folderAnalysisService.restart();
   }
 
 }
