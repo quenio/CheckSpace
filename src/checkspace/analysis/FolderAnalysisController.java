@@ -51,8 +51,8 @@ public class FolderAnalysisController extends Controller implements EventHandler
   @FXML
   public void startFolderAnalysis(final ActionEvent actionEvent)
   {
-    startButton.setVisible(false);
     folderAnalysisService.restart();
+    startButton.setVisible(false);
   }
 
   @FXML
