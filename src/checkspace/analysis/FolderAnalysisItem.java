@@ -11,6 +11,8 @@ import static java.lang.Long.max;
 /** Representa uma sub-pasta ou um arquivo dentro da pasta-raíz. */
 public class FolderAnalysisItem
 {
+  private static final File LIBRARY_DIR = new File(System.getProperty("user.home"), "Library");
+
   /** O nome do arquivo ou sub-pasta. */
   private final StringProperty name = new SimpleStringProperty();
 
@@ -53,7 +55,7 @@ public class FolderAnalysisItem
   {
     if (file.isDirectory())
     {
-      if (isSymlink(file)) return;
+      if (isSymlink(file) || isLibraryDir(file)) return;
 
       for (final File f : childrenOf(file))
       {
@@ -70,6 +72,8 @@ public class FolderAnalysisItem
 
   private void determineLatestAccessOf(final File file, final Supplier<Boolean> isCancelled)
   {
+    if (isLibraryDir(file)) return;
+
     final long max = max(lastAccess.get(), file.lastModified());
     lastAccess.set(max);
 
@@ -98,6 +102,11 @@ public class FolderAnalysisItem
       exception.printStackTrace();
       return false;
     }
+  }
+
+  private static boolean isLibraryDir(final File file)
+  {
+    return file.equals(LIBRARY_DIR);
   }
 
 }
