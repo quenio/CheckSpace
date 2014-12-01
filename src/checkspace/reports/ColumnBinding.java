@@ -1,32 +1,36 @@
 package checkspace.reports;
 
 import checkspace.analysis.FolderAnalysisItem;
-import javafx.beans.property.ReadOnlyObjectWrapper;
+import javafx.beans.property.Property;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ObservableValue;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.util.Callback;
 
 public class ColumnBinding
 {
   public static <T> void of(
-    final TableColumn<FolderAnalysisItem, String> column,
-    final Resolver<T> resolver)
+    final TableColumn<FolderAnalysisItem, T> column,
+    final Binder<T> binder)
   {
-    column.setCellValueFactory(new Factory<>(resolver));
+    column.setCellValueFactory(new ValueFactory<>(binder));
+    column.setCellFactory(new CellFactory<>(Object::toString));
   }
 
   public static <T> void of(
-    final TableColumn<FolderAnalysisItem, String> column,
-    final Resolver<T> resolver,
+    final TableColumn<FolderAnalysisItem, T> column,
+    final Binder<T> binder,
     final Formatter<T> formatter)
   {
-    column.setCellValueFactory(new Factory<>(resolver, formatter));
+    column.setCellValueFactory(new ValueFactory<>(binder));
+    column.setCellFactory(new CellFactory<>(formatter));
   }
 
   @FunctionalInterface
-  public interface Resolver<T>
+  public interface Binder<T>
   {
-    public T resolveColumnValue(FolderAnalysisItem item);
+    public void bind(FolderAnalysisItem folderAnalysisItem, Property<T> property);
   }
 
   @FunctionalInterface
@@ -35,30 +39,47 @@ public class ColumnBinding
     public abstract String formatColumnValue(T columnValue);
   }
 
-  public static class Factory<T>
-    implements Callback<TableColumn.CellDataFeatures<FolderAnalysisItem, String>, ObservableValue<String>>
+  public static class ValueFactory<T>
+    implements Callback<TableColumn.CellDataFeatures<FolderAnalysisItem, T>, ObservableValue<T>>
   {
-    private final Resolver<T> resolver;
-    private final Formatter<T> formatter;
+    private final Binder<T> binder;
 
-    public Factory(final Resolver<T> resolver)
+    public ValueFactory(final Binder<T> binder)
     {
-      this(resolver, (T item) -> item.toString());
+      this.binder = binder;
     }
 
-    public Factory(
-      final Resolver<T> resolver,
-      final Formatter<T> formatter)
+    @Override
+    public ObservableValue<T> call(final TableColumn.CellDataFeatures<FolderAnalysisItem, T> row)
     {
-      this.resolver = resolver;
+      final Property<T> property = new SimpleObjectProperty<>();
+      binder.bind(row.getValue(), property);
+      return property;
+    }
+  }
+
+  public static class CellFactory<T>
+    implements Callback<TableColumn<FolderAnalysisItem, T>, TableCell<FolderAnalysisItem, T>>
+  {
+    private final Formatter<T> formatter;
+
+    public CellFactory(final Formatter<T> formatter)
+    {
       this.formatter = formatter;
     }
 
     @Override
-    public ObservableValue<String> call(final TableColumn.CellDataFeatures<FolderAnalysisItem, String> row)
+    public TableCell<FolderAnalysisItem, T> call(final TableColumn<FolderAnalysisItem, T> column)
     {
-      final T columnValue = resolver.resolveColumnValue(row.getValue());
-      return new ReadOnlyObjectWrapper<>(formatter.formatColumnValue(columnValue));
+      return new TableCell<FolderAnalysisItem, T>()
+      {
+        @Override
+        protected void updateItem(final T item, final boolean empty)
+        {
+          super.updateItem(item, empty);
+          setText(empty ? null : formatter.formatColumnValue(item));
+        }
+      };
     }
   }
 

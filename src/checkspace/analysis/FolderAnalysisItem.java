@@ -1,37 +1,105 @@
 package checkspace.analysis;
 
-import java.util.Date;
+import javafx.beans.property.*;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.function.Supplier;
+
+import static java.lang.Long.max;
 
 /** Representa uma sub-pasta ou um arquivo dentro da pasta-raíz. */
 public class FolderAnalysisItem
 {
-  private final String name;
-  private final long space;
-  private final Date lastAccess;
-
-  public FolderAnalysisItem(final String name, final long space, final Date lastAccess)
-  {
-    this.name = name;
-    this.space = space;
-    this.lastAccess = lastAccess;
-  }
-
   /** O nome do arquivo ou sub-pasta. */
-  public String getName()
-  {
-    return name;
-  }
+  private final StringProperty name = new SimpleStringProperty();
 
   /** O espaço utilizado por este item em bytes. */
-  public long getSpace()
+  private final LongProperty space = new SimpleLongProperty();
+
+  /** O último acesso efetuado a este item. */
+  private final LongProperty lastAccess = new SimpleLongProperty();
+
+  public FolderAnalysisItem(final String name)
   {
-    return space;
+    this.name.setValue(name);
   }
 
-  /** O lastAccess do último acesso efetuado a este item */
-  public Date getLastAccess()
+  public static void bindToName(final FolderAnalysisItem folderAnalysisItem, final Property<String> property)
   {
-    return lastAccess;
+    property.bind(folderAnalysisItem.name);
+  }
+
+  public static void bindToSpace(final FolderAnalysisItem folderAnalysisItem, final Property<Number> property)
+  {
+    property.bind(folderAnalysisItem.space);
+  }
+
+  public static void bindToLastAccess(final FolderAnalysisItem folderAnalysisItem, final Property<Number> property)
+  {
+    property.bind(folderAnalysisItem.lastAccess);
+  }
+
+  public void analyzeFile(final File file, final Supplier<Boolean> isCancelled)
+  {
+    space.set(0);
+    sumSpaceOf(file, isCancelled);
+
+    lastAccess.set(0);
+    determineLatestAccessOf(file, isCancelled);
+  }
+
+  private void sumSpaceOf(final File file, final Supplier<Boolean> isCancelled)
+  {
+    if (file.isDirectory())
+    {
+      if (isSymlink(file)) return;
+
+      for (final File f : childrenOf(file))
+      {
+        if (isCancelled.get()) break;
+
+        sumSpaceOf(f, isCancelled);
+      }
+    }
+    else
+    {
+      space.set(space.get() + file.length());
+    }
+  }
+
+  private void determineLatestAccessOf(final File file, final Supplier<Boolean> isCancelled)
+  {
+    if (file.isDirectory() && isSymlink(file)) return;
+
+    final long max = max(lastAccess.get(), file.lastModified());
+    lastAccess.set(max);
+
+    for (final File f : childrenOf(file))
+    {
+      if (isCancelled.get()) break;
+
+      determineLatestAccessOf(f, isCancelled);
+    }
+  }
+
+  private File[] childrenOf(final File folder)
+  {
+    final File[] files = folder.listFiles();
+    return files == null ? new File[0] : files;
+  }
+
+  private static boolean isSymlink(final File file)
+  {
+    try
+    {
+      return !file.getCanonicalFile().equals(file.getAbsoluteFile());
+    }
+    catch (final IOException exception)
+    {
+      exception.printStackTrace();
+      return false;
+    }
   }
 
 }

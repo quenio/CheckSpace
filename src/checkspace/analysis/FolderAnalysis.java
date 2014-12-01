@@ -8,6 +8,7 @@ import javafx.collections.ObservableList;
 
 import java.io.File;
 import java.util.List;
+import java.util.function.Supplier;
 
 public class FolderAnalysis
 {
@@ -24,7 +25,7 @@ public class FolderAnalysis
     Bindings.bindContent(list, items);
   }
 
-  public void analyzeFolder(final FolderAnalyzer folderAnalyzer)
+  public void analyzeFolder(final Supplier<Boolean> isCancelled, final FolderAnalysisWatcher folderAnalysisWatcher)
   {
     final File folder = new File(folderPath.get());
     final File[] files = folder.listFiles();
@@ -33,25 +34,28 @@ public class FolderAnalysis
 
     if (files == null)
     {
-      folderAnalyzer.onEmptyAnalysis(folder);
+      folderAnalysisWatcher.onEmptyAnalysis(folder);
     }
     else
     {
       for (final File file : files)
       {
-        final FolderAnalysisItem item = folderAnalyzer.analyzeFile(file);
-        if (item == null)
+        folderAnalysisWatcher.onItemAnalysis(file);
+
+        if (isCancelled.get())
         {
           break;
         }
         else
         {
+          final FolderAnalysisItem item = new FolderAnalysisItem(file.getName());
           items.add(0, item);
+          item.analyzeFile(file, isCancelled);
         }
       }
       if (files.length == items.size())
       {
-        folderAnalyzer.onSuccessfulAnalysis();
+        folderAnalysisWatcher.onSuccessfulAnalysis();
       }
     }
   }

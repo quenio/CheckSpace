@@ -1,14 +1,12 @@
 package checkspace.analysis;
 
 import javafx.concurrent.Task;
-import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
-import java.util.Date;
 import java.util.ResourceBundle;
 
 /** Analisa todos os arquivos e sub-pastas no caminho especificado. */
-public class FolderAnalysisTask extends Task<FolderAnalysis> implements FolderAnalyzer
+public class FolderAnalysisTask extends Task<FolderAnalysis> implements FolderAnalysisWatcher
 {
   @FunctionalInterface
   public interface Factory
@@ -29,23 +27,22 @@ public class FolderAnalysisTask extends Task<FolderAnalysis> implements FolderAn
   protected FolderAnalysis call() throws Exception
   {
     updateMessageWithKey("message.analysingFolder");
-    folderAnalysis.analyzeFolder(this);
+
+    folderAnalysis.analyzeFolder(this::isCancelled, this);
+
     return folderAnalysis;
   }
 
-  @Nullable
   @Override
-  public FolderAnalysisItem analyzeFile(final File file)
+  public void onItemAnalysis(final File file)
   {
     if (isCancelled())
     {
       updateMessageWithKey("message.analysisCancelled");
-      return null;
     }
     else
     {
       updateMessageWithKey("message.analysingItem", file.getName());
-      return mapFileToItem(file);
     }
   }
 
@@ -61,56 +58,6 @@ public class FolderAnalysisTask extends Task<FolderAnalysis> implements FolderAn
     updateMessageWithKey("message.analysisComplete");
   }
 
-  private FolderAnalysisItem mapFileToItem(final File file)
-  {
-    return new FolderAnalysisItem(file.getName(), spaceOf(file), lastAccessOf(file));
-  }
-
-  private long spaceOf(final File file)
-  {
-    if (file.isDirectory())
-    {
-      long space = 0;
-
-      for (final File f : childrenOf(file))
-      {
-        space += spaceOf(f);
-      }
-
-      return space;
-    }
-    else
-    {
-      return file.length();
-    }
-  }
-
-  private Date lastAccessOf(final File file)
-  {
-    return new Date(lastAccessOf(file, 0));
-  }
-
-  private long lastAccessOf(final File file, long lastAccess)
-  {
-    if (lastAccess < file.lastModified())
-    {
-      lastAccess = file.lastModified();
-    }
-
-    for (final File f : childrenOf(file))
-    {
-      lastAccess = lastAccessOf(f, lastAccess);
-    }
-
-    return lastAccess;
-  }
-
-  private File[] childrenOf(final File folder)
-  {
-    final File[] files = folder.listFiles();
-    return files == null ? new File[0] : files;
-  }
-
   private void updateMessageWithKey(final String key)
   {
     updateMessage(resourceBundle.getString(key));
@@ -120,4 +67,5 @@ public class FolderAnalysisTask extends Task<FolderAnalysis> implements FolderAn
   {
     updateMessage(String.format(resourceBundle.getString(key), args));
   }
+
 }

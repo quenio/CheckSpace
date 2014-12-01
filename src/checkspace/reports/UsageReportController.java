@@ -18,10 +18,10 @@ public class UsageReportController extends Controller
   private TableColumn<FolderAnalysisItem, String> nameColumn;
 
   @FXML
-  private TableColumn<FolderAnalysisItem, String> spaceColumn;
+  private TableColumn<FolderAnalysisItem, Number> spaceColumn;
 
   @FXML
-  private TableColumn<FolderAnalysisItem, String> lastAccessColumn;
+  private TableColumn<FolderAnalysisItem, Number> lastAccessColumn;
 
   public UsageReportController(final FolderAnalysis folderAnalysis)
   {
@@ -32,9 +32,9 @@ public class UsageReportController extends Controller
   protected void initialize()
   {
     folderAnalysis.bindListToItems(usageReport.getItems());
-    ColumnBinding.of(nameColumn, FolderAnalysisItem::getName);
-    ColumnBinding.of(spaceColumn, FolderAnalysisItem::getSpace, Format::space);
-    ColumnBinding.of(lastAccessColumn, FolderAnalysisItem::getLastAccess, Format::date);
+    ColumnBinding.of(nameColumn, FolderAnalysisItem::bindToName);
+    ColumnBinding.of(spaceColumn, FolderAnalysisItem::bindToSpace, Format::space);
+    ColumnBinding.of(lastAccessColumn, FolderAnalysisItem::bindToLastAccess, Format::date);
   }
 
 }

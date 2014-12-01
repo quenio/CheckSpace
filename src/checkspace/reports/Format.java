@@ -2,7 +2,6 @@ package checkspace.reports;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 public class Format
 {
@@ -17,13 +16,14 @@ public class Format
   private static final DecimalFormat NUMBER_FORMAT = new DecimalFormat("###,###.##");
   private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yy HH:mm:ss");
 
-  public static String date(final Date date)
+  public static String date(final Number input)
   {
-    return DATE_FORMAT.format(date);
+    return DATE_FORMAT.format(input.longValue());
   }
 
-  public static String space(final long space)
+  public static String space(final Number input)
   {
+    final float space = input.floatValue();
     final float number;
     final String suffix;
 
