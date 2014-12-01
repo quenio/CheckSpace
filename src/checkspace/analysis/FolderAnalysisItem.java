@@ -70,8 +70,6 @@ public class FolderAnalysisItem
 
   private void determineLatestAccessOf(final File file, final Supplier<Boolean> isCancelled)
   {
-    if (file.isDirectory() && isSymlink(file)) return;
-
     final long max = max(lastAccess.get(), file.lastModified());
     lastAccess.set(max);
 
